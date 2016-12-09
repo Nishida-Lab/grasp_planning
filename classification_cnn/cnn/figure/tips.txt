@@ -1,0 +1,44 @@
+
+function:
+y = np.exp(x)
+
+min_x = -1, max_x = 1
+
+parameters:
+train_n = 60000
+test_n = 10000
+epoch_n = 20
+batchsize = 100
+
+LOSS result:
+train LOSS = 0.02142497584267403
+test LOSS = 0.04281238287122505
+ * LOSS : softmax cross entropy
+
+accuracy result:
+train accuracy = 0.9931166728337606
+test accuracy = 0.9873000073432923
+
+execution time :
+1468.07398796 sec (24 min 28 sec)
+
+
+Network:
+
+class CNN(chainer.Chain):
+
+    def __init__(self, train= True):
+        super(CNN, self).__init__(
+            conv1=L.Convolution2D(1, 20, 5),
+            conv2=L.Convolution2D(20, 50, 5),
+            fc=L.Linear(800, 500),
+            out=L.Linear(500, 10),
+        )
+        self.train = train
+
+    def __call__(self, x):
+        h1 = F.max_pooling_2d(F.relu(self.conv1(x)),2,stride = 2)
+        h2 = F.max_pooling_2d(F.relu(self.conv2(h1)),2,stride = 2)
+        h3 = self.fc(F.dropout(h2))
+        return self.out(h3)
+
