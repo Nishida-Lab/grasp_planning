@@ -1,6 +1,7 @@
 #python library
 import argparse
 import time
+import numpy as np
 
 #chainer libraty
 import chainer
@@ -10,25 +11,26 @@ from chainer import training
 from chainer.training import extensions
 from chainer import serializers
 
+from chainer import cuda, Function, gradient_check, Variable, optimizers, utils
+from chainer.functions.loss.mean_squared_error import mean_squared_error
+from chainer.functions.loss.sigmoid_cross_entropy import sigmoid_cross_entropy
+
 #python scripts
+import get_dataset as d
 import network_structure as nn
-import visualizer as v
+#import visualizer as v
 
 
 #main
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description='Chainer example: MNIST')
+    parser = argparse.ArgumentParser(description='GRASP CLASSIFER')
     parser.add_argument('--batchsize', '-b', type=int, default=100,
                         help='Number of images in each mini batch')
-    parser.add_argument('--epoch', '-e', type=int, default=20,
+    parser.add_argument('--epoch', '-e', type=int, default=100,
                         help='Number of sweeps over the dataset to train')
     parser.add_argument('--gpu', '-g', type=int, default=-1,
                         help='GPU ID (negative value indicates CPU)')
-    parser.add_argument('--out', '-o', default='result',
-                        help='Directory to output the result')
-    parser.add_argument('--unit', '-u', type=int, default=1000,
-                        help='Number of units')
     args = parser.parse_args()
 
     print 'GPU: ' + format(args.gpu)
@@ -36,60 +38,60 @@ if __name__ == '__main__':
     print '# epoch: ' + format(args.epoch)
     print ''
 
-    # Set up a neural network to train
-    # Classifier reports softmax cross entropy loss and accuracy at every
-    # iteration, which will be used by the PrintReport extension below.
     model = L.Classifier(nn.CNN())
+    amodel = nn.CNN()
     if args.gpu >= 0:
-        chainer.cuda.get_device(args.gpu).use()  # Make a specified GPU current
-        model.to_gpu()  # Copy the model to the GPU
+        chainer.cuda.get_device(args.gpu).use()
+        model.to_gpu()
 
     # Setup an optimizer
     optimizer = chainer.optimizers.Adam()
     optimizer.setup(model)
-    optimizer.add_hook(chainer.optimizer.WeightDecay(0.00001))
+    #optimizer.add_hook(chainer.optimizer.WeightDecay(0.00001))
 
-    # Load the MNIST dataset
-    train, test = chainer.datasets.get_mnist(ndim=3)
+    # Load grasp dataset
+    train_N = 500
+    validation_N = 50
+    test_N = 10
+    Xt,Yt,Xv,Yv = d.generate_dataset(train_N,validation_N)
+    train = zip(Xt,Yt)
+    test = zip(Xv,Yv)
+    print train
+
+    #print train[0][0].shape
+    #print train[0][0][0].shape
+    #print train[0][0][1].shape
 
     train_iter = chainer.iterators.SerialIterator(train, args.batchsize)
     test_iter = chainer.iterators.SerialIterator(test, args.batchsize,repeat=False, shuffle=False)
 
-    # Set up a trainer
+    aa = amodel(Variable(Xt))
+    print aa.data[0]
+    # y = []
+    # d = []
+    # y.append(0)
+    # d.append([aa.data[0][0],aa.data[0][1]])
+    # y = np.array(y,dtype=np.int32)
+    # d = np.array(d,dtype=np.float32)
+    # print d
+    # print Yt[0]
+    # loss = F.softmax_cross_entropy(d, y)
+    # print loss.data
+
+
     updater = training.StandardUpdater(train_iter, optimizer, device=args.gpu)
-    trainer = training.Trainer(updater, (args.epoch, 'epoch'), out=args.out)
+    trainer = training.Trainer(updater, (args.epoch, 'epoch'))
 
-    # Evaluate the model with the test dataset for each epoch
     trainer.extend(extensions.Evaluator(test_iter, model, device=args.gpu))
-
-    # Dump a computational graph from 'loss' variable at the first iteration
-    # The "main" refers to the target link of the "main" optimizer.
-    trainer.extend(extensions.dump_graph('main/loss'))
-
-    # Take a snapshot at each epoch
     #trainer.extend(extensions.snapshot())
-
-    # Write a log of evaluation statistics for each epoch
     trainer.extend(extensions.LogReport())
-
-    # Print selected entries of the log to stdout
-    # Here "main" refers to the target link of the "main" optimizer again, and
-    # "validation" refers to the default name of the Evaluator extension.
-    # Entries other than 'epoch' are reported by the Classifier link, called by
-    # either the updater or the evaluator.
-    trainer.extend(extensions.PrintReport(
-        ['epoch', 'main/loss', 'validation/main/loss',
-         'main/accuracy', 'validation/main/accuracy']))
-
-    # Print a progress bar to stdout
+    trainer.extend(extensions.PrintReport(['epoch', 'main/loss', 'validation/main/loss','main/accuracy', 'validation/main/accuracy']))
     trainer.extend(extensions.ProgressBar())
 
     start_time = time.time() #start time measurement
-
-    # Run the training
     trainer.run()
-
     execution_time = time.time() - start_time
+
     print "execution time : " + str(execution_time)
 
     print('saved the model')
@@ -97,4 +99,4 @@ if __name__ == '__main__':
     print('saved the optimizer')
     serializers.save_npz('cnn.state', optimizer)
 
-    v.loss_visualizer()
+    #v.loss_visualizer()

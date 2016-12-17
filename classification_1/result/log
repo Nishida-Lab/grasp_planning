@@ -1,0 +1,34 @@
+[
+    {
+        "main/loss": NaN, 
+        "validation/main/loss": NaN, 
+        "iteration": 5, 
+        "epoch": 1, 
+        "main/accuracy": 0.3940000057220459, 
+        "validation/main/accuracy": 0.3799999952316284
+    }, 
+    {
+        "main/loss": NaN, 
+        "validation/main/loss": NaN, 
+        "iteration": 10, 
+        "epoch": 2, 
+        "main/accuracy": 0.38799999952316283, 
+        "validation/main/accuracy": 0.3799999952316284
+    }, 
+    {
+        "main/loss": NaN, 
+        "validation/main/loss": NaN, 
+        "iteration": 15, 
+        "epoch": 3, 
+        "main/accuracy": 0.38799999952316283, 
+        "validation/main/accuracy": 0.3799999952316284
+    }, 
+    {
+        "main/loss": NaN, 
+        "validation/main/loss": NaN, 
+        "iteration": 20, 
+        "epoch": 4, 
+        "main/accuracy": 0.38799999952316283, 
+        "validation/main/accuracy": 0.3799999952316284
+    }
+]
