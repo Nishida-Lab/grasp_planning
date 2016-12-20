@@ -64,19 +64,19 @@ if __name__ == '__main__':
     train_iter = chainer.iterators.SerialIterator(train, args.batchsize)
     test_iter = chainer.iterators.SerialIterator(test, args.batchsize,repeat=False, shuffle=False)
 
-    aa = amodel(Variable(Xt))
-    print aa.data[0]
-    y = []
-    d = []
-    y.append(0)
-    d.append([aa.data[0][0],aa.data[0][1]])
-    y = np.array(y,dtype=np.int32)
-    d = np.array(d,dtype=np.float32)
-    #d = np.array([aa.data[0][0],aa.data[0][1]],dtype=np.float32)
-    print d
-    print Yt[0]
-    loss = F.softmax_cross_entropy(d, Yt[0])
-    print loss.data
+    # aa = amodel(Variable(Xt))
+    # print aa.data[0]
+    # y = []
+    # d = []
+    # y.append(0)
+    # d.append([aa.data[0][0],aa.data[0][1]])
+    # y = np.array(y,dtype=np.int32)
+    # d = np.array(d,dtype=np.float32)
+    # #d = np.array([aa.data[0][0],aa.data[0][1]],dtype=np.float32)
+    # print d
+    # print Yt[0]
+    # loss = F.softmax_cross_entropy(d, Yt[0])
+    # print loss.data
 
     updater = training.StandardUpdater(train_iter, optimizer, device=args.gpu)
     trainer = training.Trainer(updater, (args.epoch, 'epoch'))
