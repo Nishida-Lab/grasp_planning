@@ -139,8 +139,8 @@ def load_point_cloud(data_label_1,data_label_2,image_label):
 #main
 if __name__ == '__main__':
 
-    dlabel_1 = 6
-    dlabel_2 = 99
+    dlabel_1 = 7
+    dlabel_2 = 32
     print 'data_label_1: '+str(dlabel_1)+' data_label_2: '+str(dlabel_2)
     positive_vartices = load_positive_dataset(dlabel_1,dlabel_2)
     negative_vartices = load_negative_dataset(dlabel_1,dlabel_2)
