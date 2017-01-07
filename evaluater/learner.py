@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='GRASP CLASSIFER')
     parser.add_argument('--batchsize', '-b', type=int, default=10,
                         help='Number of images in each mini batch')
-    parser.add_argument('--epoch', '-e', type=int, default=30,
+    parser.add_argument('--epoch', '-e', type=int, default=100,
                         help='Number of sweeps over the dataset to train')
     parser.add_argument('--gpu', '-g', type=int, default=-1,
                         help='GPU ID (negative value indicates CPU)')
@@ -76,5 +76,5 @@ if __name__ == '__main__':
 
     print "execution time : " + str(execution_time)
 
-    serializers.save_npz('cnn03_cuda.model', model)
-    serializers.save_npz('cnn03_cuda.state', optimizer)
+    serializers.save_npz('cnn03a.model', model)
+    serializers.save_npz('cnn03a.state', optimizer)

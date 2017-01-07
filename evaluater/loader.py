@@ -19,7 +19,7 @@ import visualizer as v
 #main
 if __name__ == '__main__':
 
-    validation_N = 100
+    validation_N = 1000
 
     # classification:1
     #model = nn.CNN_classification1()
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     #serializers.load_npz('cnn02.model', model)
 
     model = nn.CNN_classification3()
-    serializers.load_npz('cnn03.model', model)
+    serializers.load_npz('cnn03a.model', model)
 
     #model = nn.CNN_classification4()
     #serializers.load_npz('cnn04.model', model)

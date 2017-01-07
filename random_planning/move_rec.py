@@ -110,7 +110,7 @@ if __name__ == '__main__':
     path = '../../grasp_dataset/'+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
 
     model = nn.CNN_classification3()
-    serializers.load_npz('cnn03.model', model)
+    serializers.load_npz('cnn03a.model', model)
 
     optimizer = chainer.optimizers.Adam()
     optimizer.setup(model)

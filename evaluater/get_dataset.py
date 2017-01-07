@@ -148,8 +148,8 @@ def validation_dataset(validation_N):
     scale = 4
 
     min_dir_n = 1
-    max_dir_n = 1
-    max_pic_n = 30
+    max_dir_n = 8
+    max_pic_n = 99
 
     X_validation = []
     Y_validation = []
