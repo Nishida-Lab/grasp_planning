@@ -14,11 +14,11 @@ import pcl
 
 
 #load dataset and draw grasp rectangle
-#data_label_1: directly label 1-9
+#data_label_1: directory label 1-9
 #data_label_2: picture label 1-99
 def load_positive_dataset(data_label_1,data_label_2):
 
-    #Label preparation for directly operation
+    #Label preparation for directory operation
     if data_label_1 < 10 :
         data_label_1 = str(0)+str(data_label_1)
     else:
@@ -48,7 +48,7 @@ def load_positive_dataset(data_label_1,data_label_2):
         draw.line((xy_data[i][6],xy_data[i][7])+(xy_data[i][0],xy_data[i][1]), fill='green', width=2)
 
     #set image label
-    image_label ='directly:' + str(data_label_1) + ' picture:' + str(data_label_2)
+    image_label ='directory:' + str(data_label_1) + ' picture:' + str(data_label_2)
     #draw = ImageDraw.Draw(image)
     draw.font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMono.ttf", 20)
     draw.text((300,430), image_label, (255, 0, 0))
@@ -64,7 +64,7 @@ def load_positive_dataset(data_label_1,data_label_2):
 
 def load_negative_dataset(data_label_1,data_label_2):
 
-    #Label preparation for directly operation
+    #Label preparation for directory operation
     if data_label_1 < 10 :
         data_label_1 = str(0)+str(data_label_1)
     else:
@@ -94,7 +94,7 @@ def load_negative_dataset(data_label_1,data_label_2):
         draw.line((xy_data[i][6],xy_data[i][7])+(xy_data[i][0],xy_data[i][1]), fill='blue', width=2)
 
     #set image label
-    image_label ='directly:' + str(data_label_1) + ' picture:' + str(data_label_2)
+    image_label ='directory:' + str(data_label_1) + ' picture:' + str(data_label_2)
     #draw = ImageDraw.Draw(image)
     draw.font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMono.ttf", 20)
     draw.text((300,430), image_label, (255, 0, 0))

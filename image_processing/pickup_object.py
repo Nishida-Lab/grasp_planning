@@ -26,26 +26,35 @@ def label_handling(data_label_1,data_label_2):
 
 
 # load picture data
-def find_object(data_label,scale):
+def find_object(data_label):
 
+    #1. read image
     path = '../../grasp_dataset/'+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
     img = cv2.imread(path)
     #print img.shape
+
+    #2. gray image
     grayed = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+    #3. blur image
     g_blur = cv2.GaussianBlur(grayed,(21,21),0)
 
-    print g_blur[400][400]
+    #4. binary image
+    # binary parameters
     under_thresh = 180
     max_value = 255
+
     _, binary = cv2.threshold(g_blur, under_thresh, max_value, cv2.THRESH_BINARY)
     binary_inv = cv2.bitwise_not(binary)
 
+    #5. recognize contour and rectangle
     contour, _ = cv2.findContours(binary_inv, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     img_contour = np.copy(img)
+
+    # area threshold
     min_area = 100
-    max_area = 20000
+    max_area = 15000
 
     object_contour = [cnt for cnt in contour if cv2.contourArea(cnt) < max_area and cv2.contourArea(cnt) > min_area]
     cv2.drawContours(img_contour, object_contour, -1, (255,0,255),2)
@@ -71,9 +80,9 @@ def find_object(data_label,scale):
     # plt.imshow(cv2.cvtColor(g_blur, cv2.COLOR_GRAY2RGB))
     # plt.axis('off')
 
-    plt.figure(4)
-    plt.imshow(cv2.cvtColor(binary, cv2.COLOR_GRAY2RGB))
-    plt.axis('off')
+    # plt.figure(4)
+    # plt.imshow(cv2.cvtColor(binary, cv2.COLOR_GRAY2RGB))
+    # plt.axis('off')
 
     plt.figure(5)
     plt.imshow(cv2.cvtColor(img_contour, cv2.COLOR_BGR2RGB))
@@ -84,8 +93,9 @@ def find_object(data_label,scale):
 
 if __name__ == '__main__':
 
-    #label1 = 1
-    #label2 = 15
+    #data label
+    #label1 = 5
+    #label2 = 72
 
     #for random checking
     label1 = randint(7)+1
@@ -100,6 +110,8 @@ if __name__ == '__main__':
     print ''
     print 'directory:'+str(label1)+' picture:'+str(label2)
     label = label_handling(label1,label2)
-    object_area = find_object(label,scale)
+    object_area = find_object(label)
+
+    print len(object_area)
 
     plt.show()
