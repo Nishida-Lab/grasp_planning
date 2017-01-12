@@ -37,7 +37,9 @@ def find_object(data_label):
     grayed = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     #3. blur image
-    g_blur = cv2.GaussianBlur(grayed,(21,21),0)
+    # blur parameter
+    k_size = 21
+    g_blur = cv2.GaussianBlur(grayed,(k_size,k_size),0)
 
     #4. binary image
     # binary parameters
@@ -54,7 +56,7 @@ def find_object(data_label):
 
     # area threshold
     min_area = 100
-    max_area = 15000
+    max_area = 17000
 
     object_contour = [cnt for cnt in contour if cv2.contourArea(cnt) < max_area and cv2.contourArea(cnt) > min_area]
     cv2.drawContours(img_contour, object_contour, -1, (255,0,255),2)
@@ -65,6 +67,11 @@ def find_object(data_label):
         object_rec.append(cv2.boundingRect(object_contour[i]))
         print 'x:'+str(object_rec[i][0])+' y:'+str(object_rec[i][1])+' w:'+str(object_rec[i][2])+' h:'+str(object_rec[i][3])
         cv2.rectangle(img_contour, (object_rec[i][0], object_rec[i][1]), (object_rec[i][0] + object_rec[i][2], object_rec[i][1] + object_rec[i][3]), (255, 100, 100), 2)
+
+    if len(object_rec)  == 0:
+        print "error: could not find objects."
+    else:
+        print "amount of objects: "+str(len(object_rec))
 
     #print object_rec
 
@@ -93,17 +100,21 @@ def find_object(data_label):
 
 if __name__ == '__main__':
 
-    #data label
-    #label1 = 5
-    #label2 = 72
+    # data label
+    #label1 = 3
+    #label2 = 30
 
-    #for random checking
+    # for random checking
     label1 = randint(7)+1
     label2 = randint(98)+1
 
-    #multiple recrangles will be appeard
+    # multiple recrangles will be appeard
     #label1 = 7
     #label2 = 80
+
+    # white object
+    #label1 = 2
+    #label2 = 5
 
     scale = 1
 
@@ -111,7 +122,5 @@ if __name__ == '__main__':
     print 'directory:'+str(label1)+' picture:'+str(label2)
     label = label_handling(label1,label2)
     object_area = find_object(label)
-
-    print len(object_area)
 
     plt.show()

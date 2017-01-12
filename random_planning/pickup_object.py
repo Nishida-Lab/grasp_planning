@@ -45,4 +45,9 @@ def find_object(path):
         object_rec.append(cv2.boundingRect(object_contour[i]))
         #print 'x:'+str(object_rec[i][0])+' y:'+str(object_rec[i][1])+' w:'+str(object_rec[i][2])+' h:'+str(object_rec[i][3])
 
+    if len(object_rec)  == 0:
+        print "\n error: could not find objects. \n"
+    # else:
+    #     print "\n amount of objects: "+str(len(object_rec)) +"\n"
+
     return np.array(object_rec)

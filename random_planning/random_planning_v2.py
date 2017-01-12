@@ -178,6 +178,10 @@ if __name__ == '__main__':
     #directory_n = 3
     #picture_n = 88
 
+    # white object
+    #directory_n = 2
+    #picture_n = 5
+
     scale = 4
 
     print 'directory:'+str(directory_n)+' picture:'+str(picture_n)
