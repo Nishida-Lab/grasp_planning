@@ -148,8 +148,8 @@ def captions():
 #main
 if __name__ == '__main__':
 
-    #directory_n = 7
-    #picture_n = 32
+    #directory_n = 3
+    #picture_n = 77
 
     # random checking
     directory_n = randint(7)+1
@@ -200,7 +200,7 @@ if __name__ == '__main__':
         test_label = np.argmax(test_output.data[0])
 
         pygame.display.update()
-        pygame.time.wait(800)
+        pygame.time.wait(500)
         screen.fill((0, 0, 0))
         screen.blit(bg, rect_bg)
 

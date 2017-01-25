@@ -49,14 +49,13 @@ def find_object(data_label):
     _, binary = cv2.threshold(g_blur, under_thresh, max_value, cv2.THRESH_BINARY)
     binary_inv = cv2.bitwise_not(binary)
 
-    #5. recognize contour and rectangle
-    contour, _ = cv2.findContours(binary_inv, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     img_contour = np.copy(img)
 
     # area threshold
     min_area = 100
-    max_area = 17000
+    #max_area = 17000
+    max_area = 20000
 
     object_contour = [cnt for cnt in contour if cv2.contourArea(cnt) < max_area and cv2.contourArea(cnt) > min_area]
     cv2.drawContours(img_contour, object_contour, -1, (255,0,255),2)
@@ -71,7 +70,7 @@ def find_object(data_label):
     if len(object_rec)  == 0:
         print "error: could not find objects."
     else:
-        print "amount of objects: "+str(len(object_rec))
+        print "amount of rectangles: "+str(len(object_rec))
 
     #print object_rec
 
@@ -102,7 +101,7 @@ if __name__ == '__main__':
 
     # data label
     #label1 = 3
-    #label2 = 30
+    #label2 = 77
 
     # for random checking
     label1 = randint(7)+1
@@ -115,6 +114,10 @@ if __name__ == '__main__':
     # white object
     #label1 = 2
     #label2 = 5
+
+    # big object
+    #label1 = 3
+    #label2 = 77
 
     scale = 1
 
