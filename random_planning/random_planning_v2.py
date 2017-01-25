@@ -163,8 +163,8 @@ def captions():
 #main
 if __name__ == '__main__':
 
-    #directory_n = 1
-    #picture_n = 16
+    #directory_n = 3
+    #picture_n = 77
 
     # random checking
     directory_n = randint(7)+1
@@ -241,20 +241,3 @@ if __name__ == '__main__':
                         if event.key == K_ESCAPE:
                             pygame.quit()
                             sys.exit()
-        # else:
-        #     rec_color1 = (255,0,0)
-        #     rec_color2 = (0,0,255)
-        #     update_pygame()
-        #     draw_object_rectangle(search_area)
-        #     draw_grasp_rectangle(rec_color1,rec_color2)
-        #     captions()
-
-
-        # for event in pygame.event.get():
-        #     if event.type == QUIT:
-        #         pygame.quit()
-        #         sys.exit()
-        #     if event.type == KEYDOWN:
-        #         if event.key == K_ESCAPE:
-        #             pygame.quit()
-        #             sys.exit()
