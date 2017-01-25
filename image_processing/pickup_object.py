@@ -83,13 +83,13 @@ def find_object(data_label):
     # plt.imshow(cv2.cvtColor(grayed, cv2.COLOR_GRAY2RGB))
     # plt.axis('off')
 
-    # plt.figure(3)
-    # plt.imshow(cv2.cvtColor(g_blur, cv2.COLOR_GRAY2RGB))
-    # plt.axis('off')
+    plt.figure(3)
+    plt.imshow(cv2.cvtColor(g_blur, cv2.COLOR_GRAY2RGB))
+    plt.axis('off')
 
-    # plt.figure(4)
-    # plt.imshow(cv2.cvtColor(binary, cv2.COLOR_GRAY2RGB))
-    # plt.axis('off')
+    plt.figure(4)
+    plt.imshow(cv2.cvtColor(binary, cv2.COLOR_GRAY2RGB))
+    plt.axis('off')
 
     plt.figure(5)
     plt.imshow(cv2.cvtColor(img_contour, cv2.COLOR_BGR2RGB))
