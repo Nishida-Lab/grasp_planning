@@ -49,6 +49,8 @@ def find_object(data_label):
     _, binary = cv2.threshold(g_blur, under_thresh, max_value, cv2.THRESH_BINARY)
     binary_inv = cv2.bitwise_not(binary)
 
+    #5. recognize contour and rectangle
+    contour, _ = cv2.findContours(binary_inv, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     img_contour = np.copy(img)
 
@@ -110,7 +112,6 @@ if __name__ == '__main__':
     # multiple recrangles will be appeard
     #label1 = 7
     #label2 = 80
-
     # white object
     #label1 = 2
     #label2 = 5
