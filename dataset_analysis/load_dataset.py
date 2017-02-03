@@ -139,11 +139,15 @@ def load_point_cloud(data_label_1,data_label_2,image_label):
 #main
 if __name__ == '__main__':
 
+    #demo
+    dlabel_1 = 5
+    dlabel_2 = 75
+
     #dlabel_1 = 7
     #dlabel_2 = 32
 
-    dlabel_1 = np.random.randint(8) + 1
-    dlabel_2 = np.random.randint(99) + 1
+    #dlabel_1 = np.random.randint(8) + 1
+    #dlabel_2 = np.random.randint(99) + 1
 
     print 'data_label_1: '+str(dlabel_1)+' data_label_2: '+str(dlabel_2)
     positive_vartices = load_positive_dataset(dlabel_1,dlabel_2)

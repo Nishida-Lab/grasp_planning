@@ -101,13 +101,17 @@ def find_object(data_label):
 
 if __name__ == '__main__':
 
+    #demo
+    dlabel_1 = 4
+    dlabel_2 = 75
+
     # data label
     #label1 = 3
     #label2 = 77
 
     # for random checking
-    label1 = randint(7)+1
-    label2 = randint(98)+1
+    #label1 = randint(7)+1
+    #label2 = randint(98)+1
 
     # multiple recrangles will be appeard
     #label1 = 7
