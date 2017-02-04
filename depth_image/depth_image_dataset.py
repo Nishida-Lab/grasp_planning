@@ -91,7 +91,10 @@ def depth_image(x,y,z,data_label):
 #main
 if __name__ == '__main__':
 
-    for dlabel_1 in range(1,9):
+    l1_min = input('directory_range_min > ')
+    l1_max = input('directory_range_max > ')
+
+    for dlabel_1 in range(l1_min,l1_max+1):
         for dlabel_2 in range(100):
 
             data_label = label_handling(dlabel_1,dlabel_2)
@@ -103,7 +106,7 @@ if __name__ == '__main__':
             img = depth_image(x,y,z,data_label)
 
             # save depth image
-            name = '../../grasp_dataset/'+data_label[0]+'/dm'+data_label[0]+data_label[1]+'r.png'
+            name = '../../grasp_dataset/'+data_label[0]+'/dp'+data_label[0]+data_label[1]+'r.png'
             cv2.imwrite(name,img)
             print 'saved depth image'
 
