@@ -61,8 +61,8 @@ def depth_image(x,y,z,data_label):
     xi = []
     yi = []
     zi = []
-    x_size = 120
-    y_size = 160
+    x_size = 180
+    y_size = 240
     img = np.zeros((x_size,y_size,3),np.uint8)
     dimg = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
