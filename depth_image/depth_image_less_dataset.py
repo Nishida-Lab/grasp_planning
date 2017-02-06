@@ -68,7 +68,7 @@ def depth_image(x,y,z,data_label):
 
     x_diff = max(x)-min(x)
     y_diff = max(y)-min(y)
-    z_diff = 100 # maximum object hight: 100[mm]
+    z_diff = 150 # maximum object hight: 150[mm]
     x_size -= 1
     y_size -= 1
 
