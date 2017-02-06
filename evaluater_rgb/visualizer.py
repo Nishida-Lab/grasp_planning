@@ -58,24 +58,29 @@ def loss_visualizer():
         train_accuracy.append(value["main/accuracy"])
         test_accuracy.append(value["validation/main/accuracy"])
 
-    plt.figure(1)
-    plt.plot(epoch,train_loss,"b",label = "train LOSS")
-    plt.plot(epoch,test_loss,"g",label = "validation LOSS")
+    fig1 = plt.figure(1)
+    plt.plot(epoch,train_loss,"b",linewidth=2,label = "train LOSS")
+    plt.plot(epoch,test_loss,"g",linewidth=2,label = "validation LOSS")
     plt.yscale('log')
-    plt.title("LOSS reduction")
-    plt.legend()
-    plt.xlabel("epoch", fontsize=20)
-    plt.ylabel("LOSS", fontsize=20)
+    #plt.title("LOSS reduction")
+    plt.legend(fontsize=18)
+    plt.xlabel("epoch", fontsize=22)
+    plt.ylabel("LOSS", fontsize=22)
     plt.tick_params(labelsize=18)
+    fig1.subplots_adjust(bottom=0.15)
+    ax = fig1.add_subplot(111)
 
-    plt.figure(2)
-    plt.plot(epoch,train_accuracy,"b",label = "train accuracy")
-    plt.plot(epoch,test_accuracy,"g",label = "validation accuracy ")
-    plt.title("accuracy increase")
-    plt.legend(loc = "lower right")
-    plt.xlabel("epoch",fontsize=20)
-    plt.ylabel("accuracy",fontsize=20)
+    fig2 = plt.figure(2)
+    plt.plot(epoch,train_accuracy,"b",linewidth=2,label = "train accuracy")
+    plt.plot(epoch,test_accuracy,"g",linewidth=2,label = "validation accuracy ")
+    #plt.title("accuracy increase")
+    plt.legend(loc = "lower right",fontsize=18)
+    plt.xlabel("epoch",fontsize=22)
+    plt.ylabel("accuracy",fontsize=22)
     plt.tick_params(labelsize=18)
+    fig2.subplots_adjust(bottom=0.15)
+    ax = fig2.add_subplot(111)
+
 
 # draw rectangle
 def draw_rec(x,estimated,actual):
@@ -149,3 +154,8 @@ def load_point_cloud(data_label):
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")
+
+#main
+if __name__ == '__main__':
+    loss_visualizer()
+    plt.show()

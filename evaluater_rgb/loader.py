@@ -19,7 +19,7 @@ import visualizer as v
 #main
 if __name__ == '__main__':
 
-    validation_N = 1000
+    validation_N = 100
 
     # classification:1
     #model = nn.CNN_classification1()
