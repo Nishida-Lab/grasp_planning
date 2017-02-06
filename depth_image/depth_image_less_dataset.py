@@ -95,9 +95,10 @@ if __name__ == '__main__':
 
     l1_min = input('directory_range_min > ')
     l1_max = input('directory_range_max > ')
+    l2_max = input('image_range_max > ')
 
     for dlabel_1 in range(l1_min,l1_max+1):
-        for dlabel_2 in range(100):
+        for dlabel_2 in range(l2_max+1):
 
             data_label = label_handling(dlabel_1,dlabel_2)
 
