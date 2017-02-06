@@ -51,7 +51,7 @@ def load_positive_dataset(data_label_1,data_label_2):
     image_label ='directory:' + str(data_label_1) + ' picture:' + str(data_label_2)
     #draw = ImageDraw.Draw(image)
     draw.font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMono.ttf", 20)
-    draw.text((300,430), image_label, (255, 0, 0))
+    #draw.text((300,430), image_label, (255, 0, 0))
 
     #show point cloud graph
     load_point_cloud(data_label_1,data_label_2,image_label)
@@ -97,7 +97,7 @@ def load_negative_dataset(data_label_1,data_label_2):
     image_label ='directory:' + str(data_label_1) + ' picture:' + str(data_label_2)
     #draw = ImageDraw.Draw(image)
     draw.font = ImageFont.truetype("/usr/share/fonts/truetype/freefont/FreeMono.ttf", 20)
-    draw.text((300,430), image_label, (255, 0, 0))
+    #draw.text((300,430), image_label, (255, 0, 0))
 
     #show point cloud graph
     load_point_cloud(data_label_1,data_label_2,image_label)
@@ -130,7 +130,7 @@ def load_point_cloud(data_label_1,data_label_2,image_label):
     fig = plt.figure(i)
     ax = Axes3D(fig)
     ax.plot_trisurf(x, y, z, cmap=cm.jet, linewidth=0.2)
-    ax.set_title(image_label)
+    #ax.set_title(image_label)
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")

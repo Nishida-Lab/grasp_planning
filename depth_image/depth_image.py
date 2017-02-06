@@ -63,8 +63,8 @@ def load_point_cloud(data_label):
     zd = []
     xyz = []
 
-    for i in range(0,len(point_cloud),10):
-        if 750 < point_cloud[i][0] and point_cloud[i][0] < 1400 and -400 < point_cloud[i][1] and point_cloud[i][1] < 600:
+    for i in range(0,len(point_cloud),2):
+        if 725 < point_cloud[i][0] and point_cloud[i][0] < 1400 and -500 < point_cloud[i][1] and point_cloud[i][1] < 400 and 0 < point_cloud[i][2]:
             x.append(point_cloud[i][0])
             y.append(point_cloud[i][1])
             z.append(point_cloud[i][2])
@@ -92,29 +92,52 @@ def depth_image(x,y,z):
     xi = []
     yi = []
     zi = []
-
-    im_size = 300
-    img = np.zeros((im_size,im_size,3),np.uint8)
+    x_size = 240
+    y_size = 320
+    img = np.zeros((x_size,y_size,3),np.uint8)
     dimg = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
     x_diff = max(x)-min(x)
     y_diff = max(y)-min(y)
     z_diff = max(z)-min(z)
-    im_size -= 1
+    x_size -= 1
+    y_size -= 1
 
     for i in range(len(x)):
-        xin = int(((x[i]-min(x))/x_diff)*(im_size))
-        yin = int(((y[i]-min(y))/y_diff)*(im_size))
+        xin = int(((x[i]-min(x))/x_diff)*(x_size))
+        yin = int(((y[i]-min(y))/y_diff)*(y_size))
         zv = int(((z[i]-min(z))/z_diff)*255)
         dimg[xin][yin] = zv
         print "progress: "+str(i)+"/"+str(len(x))
 
+    # rotate 180
     center = tuple(np.array([dimg.shape[1] * 0.5, dimg.shape[0] * 0.5]))
     size = tuple(np.array([dimg.shape[1], dimg.shape[0]]))
     angle = 180.0
     scale = 1.0
     rotation_matrix = cv2.getRotationMatrix2D(center, angle, scale)
     dimg = cv2.warpAffine(dimg, rotation_matrix, size, flags=cv2.INTER_CUBIC)
+
+    # blur
+    k_size = 5
+    dimg = cv2.GaussianBlur(dimg,(k_size,k_size),0)
+
+    # high contrast
+    min_table = 100
+    max_table = 192
+    diff_table = max_table - min_table
+    look_up_table = np.arange(256, dtype = 'uint8' )
+
+    for i in range(0, min_table):
+        look_up_table[i] = 0
+
+    for i in range(min_table, max_table):
+        look_up_table[i] = 255 * (i - min_table) / diff_table
+
+    for i in range(max_table, 255):
+        look_up_table[i] = 255
+
+    dimg = cv2.LUT(dimg, look_up_table)
 
     return dimg
 
@@ -144,7 +167,7 @@ if __name__ == '__main__':
     img = depth_image(x,y,z)
 
     # save depth image
-    name = '../../grasp_dataset/'+data_label[0]+'/dm'+data_label[0]+data_label[1]+'r.png'
+    name = '/dp'+data_label[0]+data_label[1]+'r.png'
     #cv2.imwrite(name,img)
     #print 'saved depth image'
 
