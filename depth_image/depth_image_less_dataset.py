@@ -46,8 +46,8 @@ def load_point_cloud(data_label):
     y = []
     z = []
 
-    for i in range(0,len(point_cloud)):
-        if 750 < point_cloud[i][0] and point_cloud[i][0] < 1400 and -400 < point_cloud[i][1] and point_cloud[i][1] < 600:
+    for i in range(0,len(point_cloud),2):
+        if 750 < point_cloud[i][0] and point_cloud[i][0] < 1275 and -300 < point_cloud[i][1] and point_cloud[i][1] < 400 and 0 < point_cloud[i][2]:
             x.append(point_cloud[i][0])
             y.append(point_cloud[i][1])
             z.append(point_cloud[i][2])
@@ -61,26 +61,28 @@ def depth_image(x,y,z,data_label):
     xi = []
     yi = []
     zi = []
-
-    im_size = 300
-    img = np.zeros((im_size,im_size,3),np.uint8)
+    x_size = 120
+    y_size = 160
+    img = np.zeros((x_size,y_size,3),np.uint8)
     dimg = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
     x_diff = max(x)-min(x)
     y_diff = max(y)-min(y)
-    z_diff = max(z)-min(z)
-    im_size -= 1
+    z_diff = 100 # maximum object hight: 100[mm]
+    x_size -= 1
+    y_size -= 1
 
     for i in range(len(x)):
-        xin = int(((x[i]-min(x))/x_diff)*(im_size))
-        yin = int(((y[i]-min(y))/y_diff)*(im_size))
-        zv = int(((z[i]-min(z))/z_diff)*255)
+        xin = ((x[i]-min(x))/x_diff)*x_size
+        yin = ((y[i]-min(y))/y_diff)*y_size
+        zv = ((z[i]-min(z))/z_diff)*255
         dimg[xin][yin] = zv
-        print 'l1:'+str(dlabel_1)+', l2:'+str(dlabel_2)+", p: "+str(i)+"/"+str(len(x))
+        print str(dlabel_1)+'-'+str(dlabel_2)+","+str(i)+"/"+str(len(x))
 
+    # rotate less 180
     center = tuple(np.array([dimg.shape[1] * 0.5, dimg.shape[0] * 0.5]))
     size = tuple(np.array([dimg.shape[1], dimg.shape[0]]))
-    angle = 180.0
+    angle = 174
     scale = 1.0
     rotation_matrix = cv2.getRotationMatrix2D(center, angle, scale)
     dimg = cv2.warpAffine(dimg, rotation_matrix, size, flags=cv2.INTER_CUBIC)

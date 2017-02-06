@@ -64,7 +64,7 @@ def load_point_cloud(data_label):
     xyz = []
 
     for i in range(0,len(point_cloud),2):
-        if 725 < point_cloud[i][0] and point_cloud[i][0] < 1400 and -500 < point_cloud[i][1] and point_cloud[i][1] < 400 and 0 < point_cloud[i][2]:
+        if 800 < point_cloud[i][0] and point_cloud[i][0] < 1325 and -300 < point_cloud[i][1] and point_cloud[i][1] < 400 and 0 < point_cloud[i][2]:
             x.append(point_cloud[i][0])
             y.append(point_cloud[i][1])
             z.append(point_cloud[i][2])
@@ -92,21 +92,21 @@ def depth_image(x,y,z):
     xi = []
     yi = []
     zi = []
-    x_size = 240
-    y_size = 320
+    x_size = 120 #240
+    y_size = 160 #320
     img = np.zeros((x_size,y_size,3),np.uint8)
     dimg = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 
     x_diff = max(x)-min(x)
     y_diff = max(y)-min(y)
-    z_diff = max(z)-min(z)
+    z_diff = 100 # maximum object hight: 100[mm]
     x_size -= 1
     y_size -= 1
 
     for i in range(len(x)):
-        xin = int(((x[i]-min(x))/x_diff)*(x_size))
-        yin = int(((y[i]-min(y))/y_diff)*(y_size))
-        zv = int(((z[i]-min(z))/z_diff)*255)
+        xin = ((x[i]-min(x))/x_diff)*x_size
+        yin = ((y[i]-min(y))/y_diff)*y_size
+        zv = ((z[i]-min(z))/z_diff)*255
         dimg[xin][yin] = zv
         print "progress: "+str(i)+"/"+str(len(x))
 
@@ -119,25 +119,25 @@ def depth_image(x,y,z):
     dimg = cv2.warpAffine(dimg, rotation_matrix, size, flags=cv2.INTER_CUBIC)
 
     # blur
-    k_size = 5
-    dimg = cv2.GaussianBlur(dimg,(k_size,k_size),0)
+    # k_size = 3
+    # dimg = cv2.blur(dimg,(k_size,k_size))
 
     # high contrast
-    min_table = 100
-    max_table = 192
-    diff_table = max_table - min_table
-    look_up_table = np.arange(256, dtype = 'uint8' )
+    # min_table = 50
+    # max_table = 190
+    # diff_table = max_table - min_table
+    # look_up_table = np.arange(256, dtype = 'uint8' )
 
-    for i in range(0, min_table):
-        look_up_table[i] = 0
+    # for i in range(0, min_table):
+    #     look_up_table[i] = 0
 
-    for i in range(min_table, max_table):
-        look_up_table[i] = 255 * (i - min_table) / diff_table
+    # for i in range(min_table, max_table):
+    #     look_up_table[i] = 255 * (i - min_table) / diff_table
 
-    for i in range(max_table, 255):
-        look_up_table[i] = 255
+    # for i in range(max_table, 255):
+    #     look_up_table[i] = 255
 
-    dimg = cv2.LUT(dimg, look_up_table)
+    # dimg = cv2.LUT(dimg, look_up_table)
 
     return dimg
 
@@ -148,9 +148,6 @@ if __name__ == '__main__':
     #demo
     #dlabel_1 = 5
     #dlabel_2 = 75
-
-    #dlabel_1 = 2
-    #dlabel_2 = 68
 
     dlabel_1 = np.random.randint(8) + 1
     dlabel_2 = np.random.randint(99) + 1
@@ -167,9 +164,9 @@ if __name__ == '__main__':
     img = depth_image(x,y,z)
 
     # save depth image
-    name = '/dp'+data_label[0]+data_label[1]+'r.png'
-    #cv2.imwrite(name,img)
-    #print 'saved depth image'
+    name = 'dp'+data_label[0]+data_label[1]+'r.png'
+    cv2.imwrite(name,img)
+    print 'saved depth image'
 
     print 'data_label_1: '+str(dlabel_1)+' data_label_2: '+str(dlabel_2)
 
