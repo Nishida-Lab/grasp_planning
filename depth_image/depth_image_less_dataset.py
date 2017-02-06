@@ -79,10 +79,10 @@ def depth_image(x,y,z,data_label):
         dimg[xin][yin] = zv
         print str(dlabel_1)+'-'+str(dlabel_2)+","+str(i)+"/"+str(len(x))
 
-    # rotate less 180
+    # rotate 180
     center = tuple(np.array([dimg.shape[1] * 0.5, dimg.shape[0] * 0.5]))
     size = tuple(np.array([dimg.shape[1], dimg.shape[0]]))
-    angle = 174
+    angle = 180
     scale = 1.0
     rotation_matrix = cv2.getRotationMatrix2D(center, angle, scale)
     dimg = cv2.warpAffine(dimg, rotation_matrix, size, flags=cv2.INTER_CUBIC)
