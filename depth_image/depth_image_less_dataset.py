@@ -72,12 +72,15 @@ def depth_image(x,y,z,data_label):
     x_size -= 1
     y_size -= 1
 
+    print "loop start"
     for i in range(len(x)):
         xin = ((x[i]-min(x))/x_diff)*x_size
         yin = ((y[i]-min(y))/y_diff)*y_size
         zv = ((z[i]-min(z))/z_diff)*255
         dimg[xin][yin] = zv
-        print str(dlabel_1)+'-'+str(dlabel_2)+","+str(i)+"/"+str(len(x))
+
+        # if i%1000 == 0:
+        #     print str(dlabel_1)+'-'+str(dlabel_2)+","+str(i)+"/"+str(len(x))
 
     # rotate 180
     center = tuple(np.array([dimg.shape[1] * 0.5, dimg.shape[0] * 0.5]))
