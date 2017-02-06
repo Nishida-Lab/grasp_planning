@@ -140,11 +140,8 @@ def load_point_cloud(data_label_1,data_label_2,image_label):
 if __name__ == '__main__':
 
     #demo
-    dlabel_1 = 5
-    dlabel_2 = 75
-
-    #dlabel_1 = 7
-    #dlabel_2 = 32
+    dlabel_1 = 7
+    dlabel_2 = 32
 
     #dlabel_1 = np.random.randint(8) + 1
     #dlabel_2 = np.random.randint(99) + 1
