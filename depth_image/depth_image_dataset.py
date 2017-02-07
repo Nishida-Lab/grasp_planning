@@ -5,6 +5,7 @@ import shutil
 import os
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
@@ -12,6 +13,9 @@ import linecache
 
 # OpenCV
 import cv2
+
+#PCL
+import pcl
 
 
 # label preparation
@@ -30,19 +34,6 @@ def label_handling(data_label_1,data_label_2):
         data_label.append(str(data_label_2))
 
     return data_label
-
-
-# load RGB image
-def load_rgb_image(data_label):
-
-    path = '../../grasp_dataset/'+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
-    img = cv2.imread(path)
-
-    grayed = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    plt.figure(0)
-    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-    plt.axis('off')
 
 
 #load point cloud data
@@ -114,7 +105,7 @@ def depth_image(z,index,data_label):
         zv = ((z[i]-min(z))/z_diff)*255
         dimg[index[i][0]-1][index[i][1]-1] = zv
 
-        if i%1000 == 0:
+        if i%10000 == 0:
             print str(data_label[0])+'-'+str(data_label[1])+","+str(i)+"/"+str(len(z))
 
     return dimg[100:430,100:500]
@@ -123,38 +114,27 @@ def depth_image(z,index,data_label):
 #main
 if __name__ == '__main__':
 
-    #demo
-    #dlabel_1 = 5
-    #dlabel_2 = 75
+    l1_min = input('directory_range_min > ')
+    l1_max = input('directory_range_max > ')
+    l2_min = input('image_range_min > ')
+    l2_max = input('image_range_max > ')
 
-    #dlabel_1 = 1
-    #dlabel_2 = 0
+    for dlabel_1 in range(l1_min,l1_max+1):
+        for dlabel_2 in range(l2_min,l2_max+1):
 
-    dlabel_1 = np.random.randint(8) + 1
-    dlabel_2 = np.random.randint(99) + 1
+            data_label = label_handling(dlabel_1,dlabel_2)
 
-    data_label = label_handling(dlabel_1,dlabel_2)
+            print 'data_label_1: '+str(data_label[0])+' data_label_2: '+str(data_label[0])
 
-    # load rgb image
-    load_rgb_image(data_label)
+            # load point cloud
+            z,index = load_point_cloud(data_label)
 
-    # load point cloud
-    z,index = load_point_cloud(data_label)
+            # generate depth image from point cloud
+            img = depth_image(z,index,data_label)
 
-    # generate depth image from point cloud
-    img = depth_image(z,index,data_label)
+            # save depth image
+            name = '../../grasp_dataset/'+data_label[0]+'/dp'+data_label[0]+data_label[1]+'r.png'
+            cv2.imwrite(name,img)
+            print 'saved depth image'
 
-    # save depth image
-    name = 'test_data/'+'dp'+data_label[0]+data_label[1]+'r.png'
-    h = img.shape[0]
-    w = img.shape[1]
-    print h
-    print 'saved depth image'
-
-    print 'data_label_1: '+str(dlabel_1)+' data_label_2: '+str(dlabel_2)
-
-    plt.figure(2)
-    plt.imshow(cv2.cvtColor(img, cv2.COLOR_GRAY2RGB))
-    plt.axis('off')
-
-    plt.show()
+    print 'finished!'
