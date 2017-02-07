@@ -138,7 +138,7 @@ def load_negative_dataset(data_label_1,data_label_2):
 if __name__ == '__main__':
 
     dlabel_1 = 1
-    dlabel_2 = 0
+    dlabel_2 = 1
 
     #d1 = 1
     #d2 = 0
