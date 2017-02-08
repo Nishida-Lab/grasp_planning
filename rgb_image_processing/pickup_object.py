@@ -76,25 +76,30 @@ def find_object(data_label):
 
     #print object_rec
 
-    # plt.figure(1)
-    # plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-    # plt.axis('off')
+    plt.figure(1)
+    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    plt.axis('off')
+    cv2.imwrite('pictures/rgb.png',img)
 
-    # plt.figure(2)
-    # plt.imshow(cv2.cvtColor(grayed, cv2.COLOR_GRAY2RGB))
-    # plt.axis('off')
+    plt.figure(2)
+    plt.imshow(cv2.cvtColor(grayed, cv2.COLOR_GRAY2RGB))
+    plt.axis('off')
+    cv2.imwrite('pictures/grayed.png',grayed)
 
     plt.figure(3)
     plt.imshow(cv2.cvtColor(g_blur, cv2.COLOR_GRAY2RGB))
     plt.axis('off')
+    cv2.imwrite('pictures/blurred.png',g_blur)
 
     plt.figure(4)
     plt.imshow(cv2.cvtColor(binary, cv2.COLOR_GRAY2RGB))
     plt.axis('off')
+    cv2.imwrite('pictures/binary.png',binary)
 
     plt.figure(5)
     plt.imshow(cv2.cvtColor(img_contour, cv2.COLOR_BGR2RGB))
     plt.axis('off')
+    cv2.imwrite('pictures/contour.png',img_contour)
 
     return object_rec
 
@@ -102,8 +107,8 @@ def find_object(data_label):
 if __name__ == '__main__':
 
     #demo
-    dlabel_1 = 4
-    dlabel_2 = 75
+    label1 = 8
+    label2 = 52
 
     # data label
     #label1 = 3
