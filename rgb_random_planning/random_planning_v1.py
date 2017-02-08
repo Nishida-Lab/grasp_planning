@@ -67,8 +67,14 @@ def random_input(data_label):
 
     theta = random.uniform(-1,1) * np.pi
 
+    xc_yc = []
+
     xc = randint(1,680)
     yc = randint(1,480)
+
+    xc_yc.append(xc)
+    xc_yc.append(yc)
+
 
     a = randint(1,85)
     b = randint(1,60)
@@ -102,17 +108,40 @@ def random_input(data_label):
     img_list = load_picture(data_label,4)
     x = rec_list + img_list
     x = np.array(x,dtype=np.float32).reshape((1,57608))
-    return x
+    return x,xc_yc,theta,rec_list
+
+
+# write text
+def captions():
+
+    rec_a = np.array(rec_d)*4
+    rec_b = []
+
+    for i in range(8):
+        rec_b.append(round(rec_a[i],2))
+
+    text1 = font1.render("directory_n: "+str(directory_n)+" picture_n: "+str(picture_n), True, (255,255,255))
+    text2 = font1.render("quit: ESC", True, (255,255,255))
+    #text3 = font1.render("renew: z", True, (255,255,255))
+    text4 = font2.render("rectangle:", True, (255,0,0))
+    text5 = font2.render("  "+str(rec_b), True, (255,0,0))
+    text6 = font2.render("center_point: "+str(center)+",  angle [deg]: "+str(round(angle*(180/np.pi),2)), True, (255,0,0))
+    screen.blit(text1, [20, 20])
+    screen.blit(text2, [20, 50])
+    #screen.blit(text3, [20, 80])
+    screen.blit(text4, [20, 370])
+    screen.blit(text5, [20, 400])
+    screen.blit(text6, [20, 440])
 
 
 #main
 if __name__ == '__main__':
 
-    directly_n = 1
-    picture_n = 2
+    directory_n = 3
+    picture_n = 50
     scale = 4
 
-    data_label = label_handling(directly_n,picture_n)
+    data_label = label_handling(directory_n,picture_n)
     path = '../../grasp_dataset/'+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
 
     model = nn.CNN_classification3()
@@ -125,14 +154,17 @@ if __name__ == '__main__':
     pygame.init()
     pygame.display.set_mode(screen_size)
     pygame.display.set_caption("random planning")
+    font1 = pygame.font.Font(None, 30)
+    font2 = pygame.font.Font(None, 30)
 
     screen = pygame.display.get_surface()
     bg = pygame.image.load(path).convert_alpha()
     rect_bg = bg.get_rect()
 
+
     while (1):
 
-        x = random_input(data_label)
+        x,center,angle,rec_d = random_input(data_label)
 
         test_output = model.forward(chainer.Variable(x))
         test_label = np.argmax(test_output.data[0])
@@ -140,6 +172,7 @@ if __name__ == '__main__':
         print test_output.data
         print test_label
         print x[0:8]
+        captions()
 
         pygame.display.update()
         pygame.time.wait(30)
@@ -164,6 +197,8 @@ if __name__ == '__main__':
         pygame.time.wait(30)
         screen.fill((0, 0, 0))
         screen.blit(bg, rect_bg)
+        captions()
+
         pygame.draw.line(screen, (255,255,0), (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
         pygame.draw.line(screen, (0,255,0), (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
         pygame.draw.line(screen, (255,255,0), (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
