@@ -149,15 +149,15 @@ def captions():
     text1 = font1.render("directory_n: "+str(directory_n)+" picture_n: "+str(picture_n), True, (255,255,255))
     text2 = font1.render("quit: ESC", True, (255,255,255))
     text3 = font1.render("renew: z", True, (255,255,255))
-    text4 = font2.render("rectangle(scaled):", True, (255,0,0))
-    text5 = font2.render("  "+str(rec), True, (255,0,0))
+    text4 = font2.render("rectangle:", True, (255,0,0))
+    text5 = font2.render("  "+str(np.array(rec)*4), True, (255,0,0))
     text6 = font2.render("center_point: "+str(center)+",  angle [deg]: "+str(round(angle*(180/np.pi),2)), True, (255,0,0))
     screen.blit(text1, [20, 20])
     screen.blit(text2, [20, 50])
     screen.blit(text3, [20, 80])
-    screen.blit(text4, [20, 400])
-    screen.blit(text5, [20, 420])
-    screen.blit(text6, [20, 450])
+    screen.blit(text4, [20, 370])
+    screen.blit(text5, [20, 400])
+    screen.blit(text6, [20, 440])
 
 
 #main
@@ -165,12 +165,12 @@ if __name__ == '__main__':
 
 
     #demo
-    directory_n = 5
-    picture_n = 75
+    #directory_n = 5
+    #picture_n = 75
 
     # random checking
-    #directory_n = randint(7)+1
-    #picture_n = randint(98)+1
+    directory_n = randint(7)+1
+    picture_n = randint(98)+1
 
     # multiple object recrangles will be appeard
     #directory_n = 7
@@ -207,7 +207,7 @@ if __name__ == '__main__':
 
     pygame.font.init()
     font1 = pygame.font.Font(None, 30)
-    font2 = pygame.font.Font(None, 25)
+    font2 = pygame.font.Font(None, 30)
 
     search_area = po.find_object(path)
 

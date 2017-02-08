@@ -21,6 +21,27 @@ from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import pcl
 
 
+# load RGB image
+def load_rgb_image(data_label_1,data_label_2):
+
+    #Label preparation for directory operation
+    if data_label_1 < 10 :
+        data_label_1 = str(0)+str(data_label_1)
+    else:
+        data_label_1 = str(data_label_1)
+
+    if data_label_2 < 10 :
+        data_label_2 = str(0)+str(data_label_2)
+    else:
+        data_label_2 = str(data_label_2)
+
+    path = '../../grasp_dataset/'+data_label_1+'/pcd'+data_label_1+data_label_2+'r.png'
+    img = Image.open(path)
+    img = img.crop((100,100,500,430))
+    img.show()
+    #img.save('rgb.png')
+
+
 #load dataset and draw grasp rectangle
 def load_positive_dataset(data_label_1,data_label_2):
 
@@ -44,11 +65,10 @@ def load_positive_dataset(data_label_1,data_label_2):
     xy_data = np.array(xy_data).reshape(len(xy_data)/4,8)
 
     #load image and draw rectangles
-    scaled = (360,270)
     image = Image.open('../../grasp_dataset/'+data_label_1+'/dp'+data_label_1+data_label_2+'r.png')
     image = image.convert("RGB")
-    #image = image.resize(scaled)
     image.show()
+    #image.save('depth.png')
     draw = ImageDraw.Draw(image)
 
     shift_x = 100
@@ -74,6 +94,7 @@ def load_positive_dataset(data_label_1,data_label_2):
 
     #show image
     image.show()
+    #image.save('depth_pos.png')
 
     return xy_data
 
@@ -101,10 +122,8 @@ def load_negative_dataset(data_label_1,data_label_2):
     xy_data = np.array(xy_data).reshape(len(xy_data)/4,8)
 
     #load image and draw rectangles
-    scaled = (360,270)
     image = Image.open('../../grasp_dataset/'+data_label_1+'/dp'+data_label_1+data_label_2+'r.png')
     image = image.convert("RGB")
-    #image = image.resize(scaled)
     draw = ImageDraw.Draw(image)
 
     shift_x = 100
@@ -130,6 +149,7 @@ def load_negative_dataset(data_label_1,data_label_2):
 
     #show image
     image.show()
+    #image.save('depth_neg.png')
 
     return xy_data
 
@@ -137,8 +157,8 @@ def load_negative_dataset(data_label_1,data_label_2):
 #main
 if __name__ == '__main__':
 
-    dlabel_1 = 10
-    dlabel_2 = 0
+    dlabel_1 = 1
+    dlabel_2 = 15
 
     #d1 = 1
     #d2 = 0
@@ -147,5 +167,6 @@ if __name__ == '__main__':
     #dlabel_2 = np.random.randint(d2) + 1
 
     print 'data_label_1: '+str(dlabel_1)+' data_label_2: '+str(dlabel_2)
+    load_rgb_image(dlabel_1,dlabel_2)
     positive_vartices = load_positive_dataset(dlabel_1,dlabel_2)
     negative_vartices = load_negative_dataset(dlabel_1,dlabel_2)
