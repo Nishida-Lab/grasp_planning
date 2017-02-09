@@ -157,14 +157,14 @@ def load_negative_dataset(data_label_1,data_label_2):
 #main
 if __name__ == '__main__':
 
-    dlabel_1 = 1
-    dlabel_2 = 15
+    #dlabel_1 = 1
+    #dlabel_2 = 15
 
-    #d1 = 1
-    #d2 = 0
+    d1 = 8
+    d2 = 99
 
-    #dlabel_1 = np.random.randint(d1) + 1
-    #dlabel_2 = np.random.randint(d2) + 1
+    dlabel_1 = np.random.randint(d1) + 1
+    dlabel_2 = np.random.randint(d2) + 1
 
     print 'data_label_1: '+str(dlabel_1)+' data_label_2: '+str(dlabel_2)
     load_rgb_image(dlabel_1,dlabel_2)
