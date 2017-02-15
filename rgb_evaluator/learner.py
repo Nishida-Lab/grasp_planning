@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='GRASP CLASSIFER')
     parser.add_argument('--batchsize', '-b', type=int, default=10,
                         help='Number of images in each mini batch')
-    parser.add_argument('--epoch', '-e', type=int, default=100,
+    parser.add_argument('--epoch', '-e', type=int, default=1000,  #100
                         help='Number of sweeps over the dataset to train')
     parser.add_argument('--gpu', '-g', type=int, default=-1,
                         help='GPU ID (negative value indicates CPU)')
@@ -47,7 +47,8 @@ if __name__ == '__main__':
         model.to_gpu()
 
     # Setup an optimizer
-    optimizer = chainer.optimizers.Adam()
+    #optimizer = chainer.optimizers.Adam()
+    optimizer = chainer.optimizers.Adam(alpha=0.00001)
     optimizer.setup(model)
 
     # Load grasp dataset
@@ -76,5 +77,5 @@ if __name__ == '__main__':
 
     print "execution time : " + str(execution_time)
 
-    serializers.save_npz('cnn03a.model', model)
-    serializers.save_npz('cnn03a.state', optimizer)
+    serializers.save_npz('cnn03_alpha.model', model)
+    serializers.save_npz('cnn03_alpha.state', optimizer)
