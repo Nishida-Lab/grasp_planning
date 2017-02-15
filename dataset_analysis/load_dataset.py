@@ -132,11 +132,11 @@ def load_point_cloud(data_label_1,data_label_2,image_label):
     ax.plot_trisurf(x, y, z, cmap=cm.jet, linewidth=0.2)
     #ax.set_title(image_label)
     ax.tick_params(labelsize = 15)
-    ax.set_xlabel(r'$x$'+' [mm]',fontsize=18)
+    ax.set_xlabel(r'$x$'+' [mm]',fontname='roman',fontsize=18)
     ax.set_xticks([i for i in range(600,2100,300)])
-    ax.set_ylabel(r'$y$'+' [mm]',fontsize=18)
+    ax.set_ylabel(r'$y$'+' [mm]',fontname='roman',fontsize=18)
     ax.set_yticks([i for i in range(-600,1400,300)])
-    ax.set_zlabel(r'$z$'+' [mm]',fontsize=18)
+    ax.set_zlabel(r'$z$'+' [mm]',fontname='roman',fontsize=18)
     ax.set_zticks([i for i in range(-150,150,50)])
 
 
