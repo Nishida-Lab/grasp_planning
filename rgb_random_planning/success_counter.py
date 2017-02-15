@@ -12,9 +12,9 @@ if __name__ == '__main__':
 
         trial = raw_input()
 
-        if trial == 'a':
+        if trial == 's':
             ns += 1.0
-        elif trial == 's':
+        elif trial == 'a':
             ns += 0.0
         else:
             print 'input error!'
