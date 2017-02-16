@@ -10,6 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 import shutil
 import os
 import random
+import time
 
 #chainer library
 import chainer
@@ -168,10 +169,10 @@ if __name__ == '__main__':
     #picture_n = input('Image No > ')
 
     # random checking
-    directory_n = 7
-    picture_n = 32
-    #directory_n = randint(9)+1
-    #picture_n = randint(40)+1
+    #directory_n = 7
+    #picture_n = 32
+    directory_n = randint(9)+1
+    picture_n = randint(40)+1
 
     # multiple object recrangles will be appeard
     #directory_n = 7
@@ -212,15 +213,22 @@ if __name__ == '__main__':
 
     search_area = po.find_object(path)
 
+    cycle = 0
+    sum_t = 0
+
     while (1):
 
         #update_pygame()
 
+        start = time.time()
         rec,center,angle = random_rec(search_area,scale)
         x = input_data(path,rec,scale)
-
         test_output = model.forward(chainer.Variable(x))
         test_label = np.argmax(test_output.data[0])
+        elapsed_time = time.time() - start
+        cycle += 1
+        sum_t += elapsed_time
+        print  str(cycle)+ ': ' +str(elapsed_time)+'[sec]'
 
 
         # draw grasp rectangle
@@ -237,10 +245,12 @@ if __name__ == '__main__':
                 for event in pygame.event.get():
                     if event.type == QUIT:
                         pygame.quit()
+                        print  'verage: ' +str(sum_t/cycle)+'[sec]'
                         sys.exit()
                     if event.type == KEYDOWN:
                         if event.key == K_z:
                             replay = 0
                         if event.key == K_ESCAPE:
                             pygame.quit()
+                            print  'Average: ' +str(sum_t/cycle)+'[sec]'
                             sys.exit()
