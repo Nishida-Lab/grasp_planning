@@ -164,12 +164,12 @@ def captions():
 if __name__ == '__main__':
 
 
-    #directory_n = input('Directory No > ')
-    #picture_n = input('Image No > ')
+    directory_n = input('Directory No > ')
+    picture_n = input('Image No > ')
 
     # random checking
-    directory_n = 7
-    picture_n = 32
+    #directory_n = 7
+    #picture_n = 32
     #directory_n = randint(9)+1
     #picture_n = randint(40)+1
 
