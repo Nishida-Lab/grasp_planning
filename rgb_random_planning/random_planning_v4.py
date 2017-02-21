@@ -25,7 +25,7 @@ from pygame.locals import *
 
 #python script
 import network_structure as nn
-import pickup_object as po
+import pickup_object2 as po
 
 
 # label preparation
@@ -64,25 +64,50 @@ def load_picture(path,scale):
 
 
 # generate grasp rectangle randomly
-def random_rec(object_area,scale):
+def random_rec(object_area,rec_area,scale):
 
     theta = random.uniform(-1,1) * np.pi
 
-    if len(object_area)==0:
+    i = object_area.shape[0]
+
+    while True:
+
         area_index = 0
-    else:
-        area_index = randint(0,len(object_area))
+        i = object_area.shape[0]
 
-    xc_yc = []
+        if i==0:
+            area_index = 0
+        else:
+            area_index = randint(0,i)
 
-    xc = randint(object_area[area_index][0],object_area[area_index][0]+object_area[area_index][2])
-    yc = randint(object_area[area_index][1],object_area[area_index][1]+object_area[area_index][3])
+        N = len(object_area[area_index])
+
+        i = randint(1,N)
+        j = (i+N/2)%N
+        k = (i+N/8)%N
+        h = (i+(5*N/8))%N
+
+        p1 = object_area[area_index][i]
+        p2 = object_area[area_index][j]
+        p3 = object_area[area_index][k]
+        p4 = object_area[area_index][h]
+
+        xc_yc = []
+
+        s1 = ((p2[0][0]-p1[0][0])*(p3[0][1]-p1[0][1])-(p2[0][1]-p1[0][1])*(p3[0][0]-p1[0][0]))/2
+        s2 = ((p2[0][0]-p1[0][0])*(p1[0][1]-p4[0][1])-(p2[0][1]-p1[0][1])*(p1[0][0]-p4[0][0]))/2
+
+        xc = p3[0][0]+(p4[0][0]-p3[0][0])*s1/(s1+s2)
+        yc = p3[0][1]+(p4[0][1]-p3[0][1])*s1/(s1+s2)
+
+        if rec_area[area_index][0] < xc and xc < rec_area[area_index][0]+rec_area[area_index][2] \
+           and rec_area[area_index][1] < yc and yc < rec_area[area_index][1]+rec_area[area_index][3]:
+            break
 
     xc_yc.append(xc)
     xc_yc.append(yc)
 
     a = randint(30,80)
-    #b = randint(10,30)
     b = 20
 
     x1 = a*np.cos(theta)-b*np.sin(theta)+xc
@@ -111,7 +136,7 @@ def random_rec(object_area,scale):
     rec_list.append(round(x4/scale,2))
     rec_list.append(round(y4/scale,2))
 
-    return rec_list,xc_yc,theta
+    return rec_list,xc_yc,theta,p1,p2,p3,p4
 
 
 # generate input data for CNN
@@ -132,9 +157,9 @@ def update_pygame():
 
 
 # draw object area
-def draw_object_rectangle(search_area):
-    for i in range(len(search_area)):
-        pygame.draw.rect(screen, (120,120,255), Rect(search_area[i]),3)
+def draw_object_rectangle(rec_area):
+    for i in range(len(rec_area)):
+        pygame.draw.rect(screen, (120,120,255), Rect(rec_area[i]),3)
 
 
 # draw grasp rectangle
@@ -169,8 +194,6 @@ if __name__ == '__main__':
     picture_n = input('Image No > ')
 
     # random checking
-    #directory_n = 7
-    #picture_n = 32
     #directory_n = randint(9)+1
     #picture_n = randint(40)+1
 
@@ -211,7 +234,7 @@ if __name__ == '__main__':
     font1 = pygame.font.Font(None, 30)
     font2 = pygame.font.Font(None, 30)
 
-    search_area = po.find_object(path)
+    search_area,rec_area = po.find_object(path)
 
     cycle = 0
     sum_t = 0
@@ -221,7 +244,7 @@ if __name__ == '__main__':
         #update_pygame()
 
         start = time.time()
-        rec,center,angle = random_rec(search_area,scale)
+        rec,center,angle,p1,p2,p3,p4 = random_rec(search_area,rec_area,scale)
         x = input_data(path,rec,scale)
         test_output = model.forward(chainer.Variable(x))
         test_label = np.argmax(test_output.data[0])
@@ -239,8 +262,13 @@ if __name__ == '__main__':
 
             while(replay==1):
                 update_pygame()
-                draw_object_rectangle(search_area)
+                draw_object_rectangle(rec_area)
                 draw_grasp_rectangle(rec_color1,rec_color2)
+                pygame.draw.circle(screen, (255,0,0), p1[0], 5)
+                pygame.draw.circle(screen, (0,255,0), p2[0], 5)
+                pygame.draw.circle(screen, (0,0,255), p3[0], 5)
+                pygame.draw.circle(screen, (0,0,0), p4[0], 5)
+                pygame.draw.circle(screen, (255,255,0), center, 5)
                 captions()
                 for event in pygame.event.get():
                     if event.type == QUIT:
