@@ -37,6 +37,7 @@ def find_object(path):
     min_area = 100
     #max_area = 17000
     max_area = 20000
+    #max_area = 15000
 
     object_contour = [cnt for cnt in contour if cv2.contourArea(cnt) < max_area and cv2.contourArea(cnt) > min_area]
     cv2.drawContours(img_contour, object_contour, -1, (255,0,255),2)

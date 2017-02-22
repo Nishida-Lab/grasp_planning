@@ -53,7 +53,7 @@ def bar_graph_all(name,rate):
 
     x = [i for i in range(len(object_name))]
 
-    fig = plt.figure(10,figsize=(10,12))
+    fig = plt.figure(10,figsize=(10,14))
     ax1 = fig.add_subplot(111)
     plt.barh(x,success_rate,align="center")
     plt.yticks(x, object_name,fontname='roman',fontsize=18)
@@ -74,7 +74,8 @@ def bar_graph_all(name,rate):
 #main
 if __name__ == '__main__':
 
-    file_id = 'success.csv'
+    #file_id = 'success.csv'
+    file_id = 'success1.csv'
     file_path = 'data/'
 
     read_file = file_path + file_id
@@ -88,6 +89,7 @@ if __name__ == '__main__':
     rate = []
 
     for row in data:
+        print row
         name.append(row[0])
         rate.append(float(row[index]))
 
