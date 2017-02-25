@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='GRASP CLASSIFER')
     parser.add_argument('--batchsize', '-b', type=int, default=10,
                         help='Number of images in each mini batch')
-    parser.add_argument('--epoch', '-e', type=int, default=1000,  #100
+    parser.add_argument('--epoch', '-e', type=int, default=100,  #100
                         help='Number of sweeps over the dataset to train')
     parser.add_argument('--gpu', '-g', type=int, default=-1,
                         help='GPU ID (negative value indicates CPU)')
@@ -39,16 +39,17 @@ if __name__ == '__main__':
 
     #model = nn.CNN_classification1()
     #model = nn.CNN_classification2()
-    model = nn.CNN_classification3()
+    #model = nn.CNN_classification3()
     #model = nn.CNN_classification4()
+    model = nn.CNN_classification5()
 
     if args.gpu >= 0:
         chainer.cuda.get_device(args.gpu).use()
         model.to_gpu()
 
     # Setup an optimizer
-    #optimizer = chainer.optimizers.Adam()
-    optimizer = chainer.optimizers.Adam(alpha=0.00001)
+    optimizer = chainer.optimizers.Adam()
+    #optimizer = chainer.optimizers.Adam(alpha=0.00001)
     optimizer.setup(model)
 
     # Load grasp dataset
@@ -67,7 +68,7 @@ if __name__ == '__main__':
     trainer = training.Trainer(updater, (args.epoch, 'epoch'))
 
     trainer.extend(extensions.Evaluator(test_iter, model, device=args.gpu))
-    #trainer.extend(extensions.snapshot())
+    trainer.extend(extensions.snapshot())
     trainer.extend(extensions.LogReport())
     trainer.extend(extensions.PrintReport(['epoch', 'main/loss', 'validation/main/loss','main/accuracy', 'validation/main/accuracy']))
     trainer.extend(extensions.ProgressBar())
@@ -77,5 +78,5 @@ if __name__ == '__main__':
 
     print "execution time : " + str(execution_time)
 
-    serializers.save_npz('cnn03_alpha.model', model)
-    serializers.save_npz('cnn03_alpha.state', optimizer)
+    serializers.save_npz('cnn05.model', model)
+    serializers.save_npz('cnn05.state', optimizer)

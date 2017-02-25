@@ -201,11 +201,12 @@ class CNN_classification4(chainer.Chain):
 
     def __init__(self, train= True):
         super(CNN_classification4, self).__init__(
-            conv = L.Convolution2D(3, 3, 5),
-            li1 = L.Linear(13572, 100),
-            li2 = L.Linear(100, 30),
-            lr1 = L.Linear(8,30),
-            lo1 = L.Linear(60, 30), #concat
+            conv1 = L.Convolution2D(3, 3, 5),
+            conv2 = L.Convolution2D(3, 3, 5),
+            li1 = L.Linear(2997, 100),
+            li2 = L.Linear(100, 50),
+            lr1 = L.Linear(8,50),
+            lo1 = L.Linear(100, 30), #concat
             lo2 = L.Linear(30, 2),
         )
         self.train = train
@@ -217,7 +218,56 @@ class CNN_classification4(chainer.Chain):
 
     def forward(self, x):
         img,rec = data_separator(x)
-        hi = self.conv(img)
+        hi = self.conv1(img)
+        hi = F.max_pooling_2d(hi,2,stride = 2)
+        hi = self.conv2(hi)
+        hi = F.max_pooling_2d(hi,2,stride = 2)
+        hi = F.relu(self.li1(hi))
+        hi = F.relu(self.li2(hi))
+        hr = F.relu(self.lr1(rec))
+        #h = hi + hr
+        h = F.concat((hi,hr),axis=1)
+        h = F.relu(self.lo1(F.dropout(h)))
+        h = self.lo2(h)
+        return h
+
+    def __call__(self, x, t):
+        self.clear()
+        h = self.forward(x)
+        #print h.data[0]
+        #print t.data
+        to = pick_up_t(t.data)
+        self.loss = F.softmax_cross_entropy(h, to)
+        reporter.report({'loss': self.loss}, self)
+        self.accuracy = accuracy.accuracy(h, to)
+        reporter.report({'accuracy': self.accuracy}, self)
+        return self.loss
+
+
+class CNN_classification5(chainer.Chain):
+
+    def __init__(self, train= True):
+        super(CNN_classification5, self).__init__(
+            conv1 = L.Convolution2D(3, 1, 5),
+            conv2 = L.Convolution2D(1, 1, 5),
+            li1 = L.Linear(999, 100),
+            li2 = L.Linear(100, 50),
+            lr1 = L.Linear(8,50),
+            lo1 = L.Linear(100, 30), #concat
+            lo2 = L.Linear(30, 2),
+        )
+        self.train = train
+
+    def clear(self):
+        self.loss = None
+        self.accuracy = None
+        self.h = None
+
+    def forward(self, x):
+        img,rec = data_separator(x)
+        hi = self.conv1(img)
+        hi = F.max_pooling_2d(hi,2,stride = 2)
+        hi = self.conv2(hi)
         hi = F.max_pooling_2d(hi,2,stride = 2)
         hi = F.relu(self.li1(hi))
         hi = F.relu(self.li2(hi))

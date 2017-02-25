@@ -264,11 +264,11 @@ if __name__ == '__main__':
                 update_pygame()
                 draw_object_rectangle(rec_area)
                 draw_grasp_rectangle(rec_color1,rec_color2)
-                pygame.draw.circle(screen, (255,0,0), p1[0], 5)
-                pygame.draw.circle(screen, (0,255,0), p2[0], 5)
-                pygame.draw.circle(screen, (0,0,255), p3[0], 5)
-                pygame.draw.circle(screen, (0,0,0), p4[0], 5)
-                pygame.draw.circle(screen, (255,255,0), center, 5)
+                #pygame.draw.circle(screen, (255,0,0), p1[0], 5)
+                #pygame.draw.circle(screen, (0,255,0), p2[0], 5)
+                #pygame.draw.circle(screen, (0,0,255), p3[0], 5)
+                #pygame.draw.circle(screen, (0,0,0), p4[0], 5)
+                #pygame.draw.circle(screen, (255,255,0), center, 5)
                 captions()
                 for event in pygame.event.get():
                     if event.type == QUIT:
@@ -282,3 +282,12 @@ if __name__ == '__main__':
                             pygame.quit()
                             print  'Average: ' +str(sum_t/cycle)+'[sec]'
                             sys.exit()
+        # else:
+        #     rec_color1 = (255,0,0)
+        #     rec_color2 = (0,0,255)
+        #     update_pygame()
+        #     draw_object_rectangle(rec_area)
+        #     draw_grasp_rectangle(rec_color1,rec_color2)
+        #     captions()
+        #     pygame.time.wait(500)
+        #     replay = 0
