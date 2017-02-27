@@ -37,11 +37,11 @@ if __name__ == '__main__':
     print '# epoch: ' + format(args.epoch)
     print ''
 
-    #model = nn.CNN_classification1()
+    model = nn.CNN_classification1()
     #model = nn.CNN_classification2()
     #model = nn.CNN_classification3()
     #model = nn.CNN_classification4()
-    model = nn.CNN_classification5()
+    #model = nn.CNN_classification5()
 
     if args.gpu >= 0:
         chainer.cuda.get_device(args.gpu).use()

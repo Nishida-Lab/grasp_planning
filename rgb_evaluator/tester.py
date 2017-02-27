@@ -21,8 +21,11 @@ if __name__ == '__main__':
 
     test_N = 200
 
-    model = nn.CNN_classification3()
-    serializers.load_npz('cnn03a.model', model)
+    #model = nn.CNN_classification3()
+    #serializers.load_npz('cnn03a.model', model)
+
+    model = nn.CNN_classification1()
+    serializers.load_npz('cnn01.model', model)
 
     optimizer = chainer.optimizers.Adam()
     optimizer.setup(model)
@@ -59,5 +62,5 @@ if __name__ == '__main__':
     for i in range(3):
         v.draw_rec(Xv[i],estimated[i],actual[i])
 
-    v.loss_visualizer()
+    #v.loss_visualizer()
     plt.show()
