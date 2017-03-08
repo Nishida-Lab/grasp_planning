@@ -1,0 +1,1 @@
+cnn03a: class3,epoch=100,train_N=6600,validation_N=500

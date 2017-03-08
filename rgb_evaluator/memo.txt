@@ -1,6 +1,0 @@
-cnn: class1,epoch=20,train_N=500,validation_N=50
-cnn0: class1,epoch=20,train_N=500,validation_N=50
-cnn01: class1,epoch=20,train_N=6600,validation_N=500
-cnn02: class2,epoch=20,train_N=6600,validation_N=500
-cnn03: class3,epoch=30,train_N=6600,validation_N=500
-cnn03a: class3,epoch=100,train_N=6600,validation_N=500
