@@ -62,6 +62,7 @@ def load_picture(data_label,scale):
     return img_list
 
 
+# calculate rectangle points
 def key_input(theta,xc,yc,a,b):
 
     scale = 4
@@ -97,6 +98,14 @@ def key_input(theta,xc,yc,a,b):
     x = np.array(x,dtype=np.float32).reshape((1,57608))
 
     return x,np.array(rec_list)*scale
+
+
+#draw rectangle
+def draw_rectangle(screen,color,scale):
+    pygame.draw.line(screen, color[0], (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
+    pygame.draw.line(screen, color[1], (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
+    pygame.draw.line(screen, color[0], (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
+    pygame.draw.line(screen, color[1], (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
 
 
 #main
@@ -179,7 +188,6 @@ if __name__ == '__main__':
         test_output = model.validation(chainer.Variable(x))
         test_label = np.argmax(test_output.data[0])
 
-        #print test_label
         text1 = font1.render("move center point: UP,DOWN,LEFT,RIGHT", True, (255,255,255))
         text2 = font1.render("rotate + : Z, rotate - : X", True, (255,255,255))
         text3 = font1.render("width +  : A, width -  : S", True, (255,255,255))
@@ -203,12 +211,8 @@ if __name__ == '__main__':
         screen.blit(bg, rect_bg)
 
         if test_label == 1:
-            pygame.draw.line(screen, (255,255,0), (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
-            pygame.draw.line(screen, (0,255,0), (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
-            pygame.draw.line(screen, (255,255,0), (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
-            pygame.draw.line(screen, (0,255,0), (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
+            color = [(255,255,0),(0,255,0)]
+            draw_rectangle(screen,color,scale)
         else:
-            pygame.draw.line(screen, (255,0,0), (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
-            pygame.draw.line(screen, (0,0,255), (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
-            pygame.draw.line(screen, (255,0,0), (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
-            pygame.draw.line(screen, (0,0,255), (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
+            color = [(255,0,0),(0,0,255)]
+            draw_rectangle(screen,color,scale)

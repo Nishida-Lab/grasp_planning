@@ -25,6 +25,7 @@ from pygame.locals import *
 #python script
 import network_structure as nn
 import pickup_object as po
+import path as p
 
 
 # label preparation
@@ -130,13 +131,13 @@ def draw_grasp_rectangle(color1,color2):
 
 
 # write text
-def captions():
-    text1 = font1.render("directory_n: "+str(directory_n)+" picture_n: "+str(picture_n), True, (255,255,255))
-    text2 = font1.render("quit: ESC", True, (255,255,255))
-    text3 = font2.render(message, True, (255,0,0))
-    text4 = font3.render("rectangle(scaled):", True, (255,0,0))
-    text5 = font3.render("  "+str(rec), True, (255,0,0))
-    text6 = font3.render("center_point: "+str(center)+",  angle [deg]: "+str(round(angle*(180/np.pi),2)), True, (255,0,0))
+def captions(dir_n,pic_n,mss,rc,cnt,rad,f1,f2,f3):
+    text1 = f1.render("directory_n: "+str(dir_n)+" picture_n: "+str(pic_n), True, (255,255,255))
+    text2 = f1.render("quit: ESC", True, (255,255,255))
+    text3 = f2.render(mss, True, (255,0,0))
+    text4 = f3.render("rectangle(scaled):", True, (255,0,0))
+    text5 = f3.render("  "+str(rc), True, (255,0,0))
+    text6 = f3.render("center_point: "+str(cnt)+",  angle [deg]: "+str(round(rad*(180/np.pi),2)), True, (255,0,0))
     screen.blit(text1, [20, 20])
     screen.blit(text2, [20, 50])
     screen.blit(text3, [80, 80])
@@ -171,7 +172,7 @@ if __name__ == '__main__':
 
     print 'directory:'+str(directory_n)+' picture:'+str(picture_n)
     data_label = label_handling(directory_n,picture_n)
-    path = '../../grasp_dataset/'+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
+    path = p.data_path()+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
 
     model = nn.CNN_classification3()
     serializers.load_npz('cnn03a.model', model)
@@ -223,8 +224,7 @@ if __name__ == '__main__':
             message = "evaluation: non-graspable"
 
         draw_grasp_rectangle(rec_color1,rec_color2)
-        captions()
-
+        captions(directory_n,picture_n,message,rec,center,angle,font1,font2,font3)
 
         for event in pygame.event.get():
             if event.type == QUIT:

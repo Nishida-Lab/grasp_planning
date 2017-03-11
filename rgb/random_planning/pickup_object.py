@@ -1,7 +1,6 @@
 # python library
 import numpy as np
 from numpy.random import *
-#from matplotlib import pyplot as plt
 
 # OpenCV
 import cv2
@@ -21,7 +20,6 @@ def find_object(path):
     g_blur = cv2.GaussianBlur(grayed,(21,21),0)
 
     #4. binary image
-    # binary parameters
     under_thresh = 180
     max_value = 255
 
@@ -35,7 +33,6 @@ def find_object(path):
 
     # area threshold
     min_area = 100
-    #max_area = 17000
     max_area = 20000
 
     object_contour = [cnt for cnt in contour if cv2.contourArea(cnt) < max_area and cv2.contourArea(cnt) > min_area]
@@ -44,7 +41,6 @@ def find_object(path):
 
     for i in range(len(object_contour)):
         object_rec.append(cv2.boundingRect(object_contour[i]))
-        #print 'x:'+str(object_rec[i][0])+' y:'+str(object_rec[i][1])+' w:'+str(object_rec[i][2])+' h:'+str(object_rec[i][3])
 
     if len(object_rec)  == 0:
         print "\n error: could not find objects. \n"

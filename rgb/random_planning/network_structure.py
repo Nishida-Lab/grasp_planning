@@ -63,7 +63,6 @@ class CNN_classification1(chainer.Chain):
             li2 = L.Linear(500, 200),
             li3 = L.Linear(200, 50),
             lr1 = L.Linear(8,50),
-            #lo1 = L.Linear(50, 50), #just add
             lo1 = L.Linear(100, 50), #concat
             lo2 = L.Linear(50, 2),
         )
@@ -85,7 +84,6 @@ class CNN_classification1(chainer.Chain):
         hi = F.relu(self.li2(hi))
         hi = F.relu(self.li3(hi))
         hr = F.relu(self.lr1(rec))
-        #h = hi + hr
         h = F.concat((hi,hr),axis=1)
         h = F.relu(self.lo1(F.dropout(h)))
         h = self.lo2(h)
@@ -94,8 +92,6 @@ class CNN_classification1(chainer.Chain):
     def __call__(self, x, t):
         self.clear()
         h = self.forward(x)
-        #print h.data[0]
-        #print t.data
         to = pick_up_t(t.data)
         self.loss = F.softmax_cross_entropy(h, to)
         reporter.report({'loss': self.loss}, self)
@@ -132,7 +128,6 @@ class CNN_classification2(chainer.Chain):
         hi = F.relu(self.li1(hi))
         hi = F.relu(self.li2(hi))
         hr = F.relu(self.lr1(rec))
-        #h = hi + hr
         h = F.concat((hi,hr),axis=1)
         h = F.relu(self.lo1(F.dropout(h)))
         h = self.lo2(h)
@@ -141,8 +136,6 @@ class CNN_classification2(chainer.Chain):
     def __call__(self, x, t):
         self.clear()
         h = self.forward(x)
-        #print h.data[0]
-        #print t.data
         to = pick_up_t(t.data)
         self.loss = F.softmax_cross_entropy(h, to)
         reporter.report({'loss': self.loss}, self)
@@ -178,7 +171,6 @@ class CNN_classification3(chainer.Chain):
         hi = F.relu(self.li1(hi))
         hi = F.relu(self.li2(hi))
         hr = F.relu(self.lr1(rec))
-        #h = hi + hr
         h = F.concat((hi,hr),axis=1)
         h = F.relu(self.lo1(F.dropout(h)))
         h = self.lo2(h)
@@ -193,7 +185,6 @@ class CNN_classification3(chainer.Chain):
         hi = F.relu(self.li1(hi))
         hi = F.relu(self.li2(hi))
         hr = F.relu(self.lr1(rec))
-        #h = hi + hr
         h = F.concat((hi,hr),axis=1)
         h = F.relu(self.lo1(h))
         h = self.lo2(h)
@@ -203,8 +194,6 @@ class CNN_classification3(chainer.Chain):
     def __call__(self, x, t):
         self.clear()
         h = self.forward(x)
-        #print h.data[0]
-        #print t.data
         to = pick_up_t(t.data)
         self.loss = F.softmax_cross_entropy(h, to)
         reporter.report({'loss': self.loss}, self)
@@ -238,7 +227,6 @@ class CNN_classification4(chainer.Chain):
         hi = F.relu(self.li1(hi))
         hi = F.relu(self.li2(hi))
         hr = F.relu(self.lr1(rec))
-        #h = hi + hr
         h = F.concat((hi,hr),axis=1)
         h = F.relu(self.lo1(F.dropout(h)))
         h = self.lo2(h)
@@ -247,8 +235,6 @@ class CNN_classification4(chainer.Chain):
     def __call__(self, x, t):
         self.clear()
         h = self.forward(x)
-        #print h.data[0]
-        #print t.data
         to = pick_up_t(t.data)
         self.loss = F.softmax_cross_entropy(h, to)
         reporter.report({'loss': self.loss}, self)

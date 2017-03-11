@@ -112,27 +112,33 @@ def random_input(data_label):
     return x,xc_yc,theta,rec_list
 
 
-# write text
-def captions():
+# draw grasp rectangle
+def draw_grasp_rectangle(color1,color2):
+    pygame.draw.line(screen, rec_color1, (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
+    pygame.draw.line(screen, rec_color2, (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
+    pygame.draw.line(screen, rec_color1, (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
+    pygame.draw.line(screen, rec_color2, (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
 
-    rec_a = np.array(rec_d)*4
+
+# write text
+def captions(rcd,dir_n,pic_n,cnt,rad,f1,f2):
+
+    rec_a = np.array(rcd)*4
     rec_b = []
 
     for i in range(8):
         rec_b.append(round(rec_a[i],2))
 
-    text1 = font1.render("directory_n: "+str(directory_n)+" picture_n: "+str(picture_n), True, (255,255,255))
-    text2 = font1.render("quit: ESC", True, (255,255,255))
-    #text3 = font1.render("renew: z", True, (255,255,255))
-    text4 = font2.render("rectangle:", True, (255,0,0))
-    text5 = font2.render("  "+str(rec_b), True, (255,0,0))
-    text6 = font2.render("center_point: "+str(center)+",  angle [deg]: "+str(round(angle*(180/np.pi),2)), True, (255,0,0))
+    text1 = f1.render("directory_n: "+str(dir_n)+" picture_n: "+str(pic_n), True, (255,255,255))
+    text2 = f1.render("quit: ESC", True, (255,255,255))
+    text3 = f2.render("rectangle:", True, (255,0,0))
+    text4 = f2.render("  "+str(rec_b), True, (255,0,0))
+    text5 = f2.render("center_point: "+str(cnt)+",  angle [deg]: "+str(round(rad*(180/np.pi),2)), True, (255,0,0))
     screen.blit(text1, [20, 20])
     screen.blit(text2, [20, 50])
-    #screen.blit(text3, [20, 80])
-    screen.blit(text4, [20, 370])
-    screen.blit(text5, [20, 400])
-    screen.blit(text6, [20, 440])
+    screen.blit(text3, [20, 370])
+    screen.blit(text4, [20, 400])
+    screen.blit(text5, [20, 440])
 
 
 #main
@@ -173,7 +179,7 @@ if __name__ == '__main__':
         print test_output.data
         print test_label
         print x[0:8]
-        captions()
+        captions(rec_d,directory_n,picture_n,center,angle,font1,font2)
 
         pygame.display.update()
         pygame.time.wait(30)
@@ -181,16 +187,14 @@ if __name__ == '__main__':
         screen.blit(bg, rect_bg)
 
         if test_label == 1:
-            pygame.draw.line(screen, (255,255,0), (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
-            pygame.draw.line(screen, (0,255,0), (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
-            pygame.draw.line(screen, (255,255,0), (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
-            pygame.draw.line(screen, (0,255,0), (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
+            rec_color1 = (255,255,0)
+            rec_color2 = (0,255,0)
+            draw_grasp_rectangle(rec_color1,rec_color2)
             break
         else:
-            pygame.draw.line(screen, (255,0,0), (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
-            pygame.draw.line(screen, (0,0,255), (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
-            pygame.draw.line(screen, (255,0,0), (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
-            pygame.draw.line(screen, (0,0,255), (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
+            rec_color1 = (255,0,0)
+            rec_color2 = (0,0,255)
+            draw_grasp_rectangle(rec_color1,rec_color2)
 
     while(1):
 
@@ -198,12 +202,11 @@ if __name__ == '__main__':
         pygame.time.wait(30)
         screen.fill((0, 0, 0))
         screen.blit(bg, rect_bg)
-        captions()
+        captions(rec_d,directory_n,picture_n,center,angle,font1,font2)
 
-        pygame.draw.line(screen, (255,255,0), (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
-        pygame.draw.line(screen, (0,255,0), (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
-        pygame.draw.line(screen, (255,255,0), (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
-        pygame.draw.line(screen, (0,255,0), (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
+        rec_color1 = (255,255,0)
+        rec_color2 = (0,255,0)
+        draw_grasp_rectangle(rec_color1,rec_color2)
 
         for event in pygame.event.get():
             if event.type == QUIT:

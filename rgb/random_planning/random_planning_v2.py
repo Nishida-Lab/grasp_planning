@@ -125,11 +125,11 @@ def input_data(path,rec_list,scale):
 
 
 # update
-def update_pygame():
+def update_pygame(scr):
     pygame.display.update()
     #pygame.time.wait(100)
-    screen.fill((0, 0, 0))
-    screen.blit(bg, rect_bg)
+    scr.fill((0, 0, 0))
+    scr.blit(bg, rect_bg)
 
 
 # draw object area
@@ -147,13 +147,13 @@ def draw_grasp_rectangle(color1,color2):
 
 
 # write text
-def captions():
-    text1 = font1.render("directory_n: "+str(directory_n)+" picture_n: "+str(picture_n), True, (255,255,255))
-    text2 = font1.render("quit: ESC", True, (255,255,255))
-    text3 = font1.render("renew: z", True, (255,255,255))
-    text4 = font2.render("rectangle:", True, (255,0,0))
-    text5 = font2.render("  "+str(np.array(rec)*4), True, (255,0,0))
-    text6 = font2.render("center_point: "+str(center)+",  angle [deg]: "+str(round(angle*(180/np.pi),2)), True, (255,0,0))
+def captions(dir_n,pic_n,rc,cnt,rad,f1,f2):
+    text1 = f1.render("directory_n: "+str(dir_n)+" picture_n: "+str(pic_n), True, (255,255,255))
+    text2 = f1.render("quit: ESC", True, (255,255,255))
+    text3 = f1.render("renew: z", True, (255,255,255))
+    text4 = f2.render("rectangle:", True, (255,0,0))
+    text5 = f2.render("  "+str(np.array(rc)*4), True, (255,0,0))
+    text6 = f2.render("center_point: "+str(cnt)+",  angle [deg]: "+str(round(rad*(180/np.pi),2)), True, (255,0,0))
     screen.blit(text1, [20, 20])
     screen.blit(text2, [20, 50])
     screen.blit(text3, [20, 80])
@@ -219,8 +219,6 @@ if __name__ == '__main__':
 
     while (1):
 
-        #update_pygame()
-
         start = time.time()
         rec,center,angle = random_rec(search_area,scale)
         x = input_data(path,rec,scale)
@@ -231,7 +229,6 @@ if __name__ == '__main__':
         sum_t += elapsed_time
         print  str(cycle)+ ': ' +str(elapsed_time)+'[sec]'
 
-
         # draw grasp rectangle
         if test_label == 1:
             rec_color1 = (255,255,0)
@@ -239,10 +236,10 @@ if __name__ == '__main__':
             replay = 1
 
             while(replay==1):
-                update_pygame()
+                update_pygame(screen)
                 draw_object_rectangle(search_area)
                 draw_grasp_rectangle(rec_color1,rec_color2)
-                captions()
+                captions(directory_n,picture_n,rec,center,angle,font1,font2)
                 for event in pygame.event.get():
                     if event.type == QUIT:
                         pygame.quit()

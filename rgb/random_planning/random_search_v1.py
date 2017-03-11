@@ -24,6 +24,8 @@ from pygame.locals import *
 
 #python script
 import network_structure as nn
+import path as p
+
 
 # label preparation
 def label_handling(data_label_1,data_label_2):
@@ -46,7 +48,7 @@ def label_handling(data_label_1,data_label_2):
 # load picture data
 def load_picture(data_label,scale):
 
-    img =Image.open('../../grasp_dataset/'+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png')
+    img =Image.open(p.data_path()+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png')
 
     resize_img = img.resize((img.size[0]/scale,img.size[1]/scale))
 
@@ -105,6 +107,14 @@ def random_input(data_label):
     return x
 
 
+#draw rectangle
+def draw_rectangle(screen,color,scale):
+    pygame.draw.line(screen, color[0], (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
+    pygame.draw.line(screen, color[1], (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
+    pygame.draw.line(screen, color[0], (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
+    pygame.draw.line(screen, color[1], (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
+
+
 #main
 if __name__ == '__main__':
 
@@ -113,7 +123,7 @@ if __name__ == '__main__':
     scale = 4
 
     data_label = label_handling(directly_n,picture_n)
-    path = '../../grasp_dataset/'+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
+    path = p.data_path()+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
 
     model = nn.CNN_classification3()
     serializers.load_npz('cnn03a.model', model)
@@ -137,10 +147,10 @@ if __name__ == '__main__':
         test_output = model.forward(chainer.Variable(x))
         test_label = np.argmax(test_output.data[0])
 
-        print test_output.data
-        print test_label
+        #print test_output.data
+        #print test_label
         #x = random_input(data_label)
-        print x[0:8]
+        #print x[0:8]
 
         pygame.display.update()
         pygame.time.wait(500)
@@ -148,15 +158,11 @@ if __name__ == '__main__':
         screen.blit(bg, rect_bg)
 
         if test_label == 1:
-            pygame.draw.line(screen, (255,255,0), (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
-            pygame.draw.line(screen, (0,255,0), (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
-            pygame.draw.line(screen, (255,255,0), (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
-            pygame.draw.line(screen, (0,255,0), (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
+            color = [(255,255,0),(0,255,0)]
+            draw_rectangle(screen,color,scale)
         else:
-            pygame.draw.line(screen, (255,0,0), (x[0][0]*scale,x[0][1]*scale), (x[0][2]*scale,x[0][3]*scale),5)
-            pygame.draw.line(screen, (0,0,255), (x[0][2]*scale,x[0][3]*scale), (x[0][4]*scale,x[0][5]*scale),5)
-            pygame.draw.line(screen, (255,0,0), (x[0][4]*scale,x[0][5]*scale), (x[0][6]*scale,x[0][7]*scale),5)
-            pygame.draw.line(screen, (0,0,255), (x[0][6]*scale,x[0][7]*scale), (x[0][0]*scale,x[0][1]*scale),5)
+            color = [(255,0,0),(0,0,255)]
+            draw_rectangle(screen,color,scale)
 
         for event in pygame.event.get():
             if event.type == QUIT:

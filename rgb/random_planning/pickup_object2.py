@@ -1,7 +1,6 @@
 # python library
 import numpy as np
 from numpy.random import *
-from matplotlib import pyplot as plt
 
 # OpenCV
 import cv2
@@ -21,7 +20,6 @@ def find_object(path):
     g_blur = cv2.GaussianBlur(grayed,(21,21),0)
 
     #4. binary image
-    # binary parameters
     under_thresh = 180
     max_value = 255
 
