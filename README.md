@@ -1,13 +1,15 @@
 # grasp_planning
 
 ##Environment
-* Ubuntu 14.04
+
+* * Ubuntu 14.04
 * Python 2.7.6
 * Chainer 1.19.0
 * Pygame 1.9.1release
 * OpenCV(CV2) 2.4.8
 
 ##Usage
+
 1. Create a new directory and `clone`.
 ```
 $ mkdir robotic_grasp && cd $_
@@ -17,6 +19,7 @@ $ git clone https://github.com/Nishida-Lab/grasp_planning.git
 http://pr.cs.cornell.edu/grasping/rect_data/data.php
 
 ## Directory Structure
+
 ```
 robotic_grasp              <- the directory you created
     ├── grasp_dataset      <- Cornell Grasping Dataset
@@ -26,6 +29,7 @@ robotic_grasp              <- the directory you created
 ```
 
 ##Note
+
 There are NaN data in the dataset so please delete before you use it.
 * pcd0132cpos.txt
 ```
