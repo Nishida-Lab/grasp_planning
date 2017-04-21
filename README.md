@@ -1,14 +1,14 @@
 # grasp_planning
 
-##Environment
+## Environment
 
-* * Ubuntu 14.04
+* Ubuntu 14.04
 * Python 2.7.6
 * Chainer 1.19.0
 * Pygame 1.9.1release
 * OpenCV(CV2) 2.4.8
 
-##Usage
+## Usage
 
 1. Create a new directory and `clone`.
 ```
@@ -28,7 +28,7 @@ robotic_grasp              <- the directory you created
     └── grasp_planning     <- this repository
 ```
 
-##Note
+## Note
 
 There are NaN data in the dataset so please delete before you use it.
 * pcd0132cpos.txt
