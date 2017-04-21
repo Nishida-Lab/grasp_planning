@@ -179,17 +179,7 @@ def test_dataset(test_N,scale):
 #main
 if __name__ == '__main__':
 
-    scale = 1
-    dir_n = 10
-    img_n = 10
-
-    label = label_handling(dir_n,img_n)
-
-    img = load_depth_image(label,scale)
-    rec = load_rectangle(label,0,scale)
-
-    print len(rec)
-    print len(img)
+    scale = 2
 
     train_N = 100
     validation_N = 50
@@ -200,5 +190,3 @@ if __name__ == '__main__':
 
     train = zip(Xtr,Ytr)
     test = zip(Xte,Yte)
-
-    print train[0]
