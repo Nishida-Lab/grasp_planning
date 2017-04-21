@@ -10,6 +10,7 @@ from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 # Python scripts
+import visualizer as v
 import path as p
 
 
