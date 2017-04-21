@@ -15,7 +15,7 @@
 $ mkdir robotic_grasp && cd $_
 $ git clone https://github.com/Nishida-Lab/grasp_planning.git
 ```
-2. Download Cornell Grasping Dataset from following URL.
+2. Download Cornell Grasping Dataset from following URL.  
 http://pr.cs.cornell.edu/grasping/rect_data/data.php
 
 ## Directory Structure
@@ -30,7 +30,7 @@ robotic_grasp              <- the directory you created
 
 ## Note
 
-There are NaN data in the dataset so please delete before you use it.
+There are NaN data in the dataset so please modify some files before you use them.
 * pcd0132cpos.txt
 ```
 283 286.999 
@@ -69,6 +69,7 @@ NaN NaN
 262 313 
 259 286.772
 ```
+  
 * pcd0165cpos.txt
 ```
 310 269.716 
