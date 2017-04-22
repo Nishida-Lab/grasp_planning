@@ -1,12 +1,13 @@
 # grasp_planning
 
-This is Grasp Planning Project repository for the industrial robot uing newral networks. Currently, `Cornell Grasping Dataset`(Robot Learning Lab, Computer Science Department, Cornell University) is used to train the newral networks.
+This repository is for the Robotic Grasp Planning Project using Newral Networks. Currently, `Cornell Grasping Dataset`(Robot Learning Lab, Computer Science Department, Cornell University) is used to train the newral networks.
 
 ## Environment
 
+* Ubuntu 14.04
+
 Please install following software before use this repository.
 
-* Ubuntu 14.04
 * Python 2.7.6
 * Chainer 1.19.0
 * Pygame 1.9.1 release
@@ -14,7 +15,7 @@ Please install following software before use this repository.
 
 ## Usage
 
-1. Create a new directory and `clone`.
+1. Create a new directory and `git clone` this repository.
 ```
 $ mkdir -p robotic_grasp/grasp_dataset && cd robotic_grasp
 $ git clone https://github.com/Nishida-Lab/grasp_planning.git
@@ -37,8 +38,9 @@ robotic_grasp              <- the directory you created
 
 ## Note
 
-There are NaN data in the dataset so please modify some files before you use them.
-* pcd0132cpos.txt
+There are NaN data in the dataset `01`. So please modify some files before you use them.
+
+*  pcd0132cpos.txt
 ```
 283 286.999 
 284 315 
