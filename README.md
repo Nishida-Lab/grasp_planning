@@ -1,12 +1,12 @@
 # grasp_planning
 
-This repository is for the Robotic Grasp Planning Project using Newral Networks. Currently, `Cornell Grasping Dataset`(Robot Learning Lab, Computer Science Department, Cornell University) is used to train the newral networks.
+This repository is for the Robotic Grasp Planning Project using Neural Networks. Currently, `Cornell Grasping Dataset`(Robot Learning Lab, Computer Science Department, Cornell University) is used to train the neural networks.
 
 ## Environment
 
 * Ubuntu 14.04
 
-Please install following software before use this repository.
+Please install the following softwares before using this repository.
 
 * Python 2.7.6
 * Chainer 1.19.0
@@ -23,7 +23,7 @@ $ git clone https://github.com/Nishida-Lab/grasp_planning.git
 2. Download `Cornell Grasping Dataset` from following URL.  
 http://pr.cs.cornell.edu/grasping/rect_data/data.php
 
-3. Move each dataset to directory `grasp_dataset` according to the directory structure.
+3. Move each dataset to the directory `grasp_dataset` according to the directory structure.
 
 ## Directory Structure
 
