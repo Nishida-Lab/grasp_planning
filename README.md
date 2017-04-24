@@ -36,11 +36,27 @@ robotic_grasp              <- the directory you created
     └── grasp_planning     <- this repository
 ```
 
+## Explanation of Cornell Grasping Dataset
+
+Please read the document at following URL.
+http://pr.cs.cornell.edu/grasping/rect_data/readmeRawData.txt
+
 ## Note
 
-There are NaN data in the dataset `01`. So please modify some files before you use them.
+These two files in the dataset `01` contain some NaN data.
 
-*  pcd0132cpos.txt
+* pcd0132cpos.txt
+* pcd0165cpos.txt
+
+So please modify some files before you use them.
+
+### How to delete NaN data
+
+These two files contain the information of `Grasping Rectangle`. They contain 4 lines for each rectangle. Each line contains the x and y coordinate of a vertex of that rectangle separated by a space. So when you delete NaN data, you need to delete 4 lines to maintain the structure of rectangles. You can modify the files by copying contents below.
+
+* pcd0132cpos.txt
+
+  Raw data (before modification)
 ```
 283 286.999 
 284 315 
@@ -63,7 +79,9 @@ NaN NaN
 262 313 
 259 286.772
 ```
-↓ modify like this
+↓ modify the file like this
+
+  After modification
 ```
 283 286.999 
 284 315 
@@ -78,8 +96,10 @@ NaN NaN
 262 313 
 259 286.772
 ```
-  
+
 * pcd0165cpos.txt
+
+  Raw data (before modification)
 ```
 310 269.716 
 313 301 
@@ -94,7 +114,9 @@ NaN NaN
 321 305 
 NaN NaN
 ```
-↓ modify like this
+  ↓ modify the file like this
+
+  After modification
 ```
 310 269.716 
 313 301 
