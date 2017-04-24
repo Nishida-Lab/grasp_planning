@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='GRASP CLASSIFER')
     parser.add_argument('--batchsize', '-b', type=int, default=10,
                         help='Number of images in each mini batch')
-    parser.add_argument('--epoch', '-e', type=int, default=100,
+    parser.add_argument('--epoch', '-e', type=int, default=200,
                         help='Number of sweeps over the dataset to train')
     parser.add_argument('--gpu', '-g', type=int, default=-1,
                         help='GPU ID (negative value indicates CPU)')
@@ -42,10 +42,6 @@ if __name__ == '__main__':
     print ''
 
     model = nn.CNN_classification1()
-    #model = nn.CNN_classification2()
-    #model = nn.CNN_classification3()
-    #model = nn.CNN_classification4()
-    #model = nn.CNN_classification5()
 
     # Setup an optimizer
     optimizer = chainer.optimizers.Adam()
@@ -53,10 +49,11 @@ if __name__ == '__main__':
     optimizer.setup(model)
 
     # Load grasp dataset
-    train_N = 6600
-    validation_N = 500
+    scale = 2
+    train_N = 4800
+    validation_N = 400
     test_N = 10
-    Xt,Yt,Xv,Yv = d.generate_dataset(train_N,validation_N)
+    Xt,Yt,Xv,Yv = d.generate_dataset(train_N,validation_N,scale)
     train = zip(Xt,Yt)
     test = zip(Xv,Yv)
 
@@ -78,5 +75,5 @@ if __name__ == '__main__':
 
     print "execution time : " + str(execution_time)
 
-    serializers.save_npz('cnn01.model', model)
-    serializers.save_npz('cnn01.state', optimizer)
+    serializers.save_npz('cnn_test.model', model)
+    serializers.save_npz('cnn_test.state', optimizer)

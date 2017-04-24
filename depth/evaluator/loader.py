@@ -19,26 +19,17 @@ import visualizer as v
 #main
 if __name__ == '__main__':
 
+    scale = 2
     validation_N = 100
 
     # classification:1
     model = nn.CNN_classification1()
-    serializers.load_npz('cnn01.model', model)
-
-    # classification:2
-    #model = nn.CNN_classification2()
-    #serializers.load_npz('cnn02.model', model)
-
-    #model = nn.CNN_classification3()
-    #serializers.load_npz('cnn03a.model', model)
-
-    #model = nn.CNN_classification4()
-    #serializers.load_npz('cnn04.model', model)
+    serializers.load_npz('cnn_test.model', model)
 
     optimizer = chainer.optimizers.Adam()
     optimizer.setup(model)
 
-    Xv,Yv = d.validation_dataset(validation_N)
+    Xv,Yv = d.validation_dataset(validation_N,scale)
     validation_output = model.forward(chainer.Variable(Xv))
 
     print "< negative = 0, positive = 1 >"
@@ -67,8 +58,8 @@ if __name__ == '__main__':
     ac = float(success_n/validation_N)
     print "accuracy: " + str(ac)
 
-    for i in range(3):
-        v.draw_rec(Xv[i],estimated[i],actual[i])
+    for i in range(10):
+        v.draw_rec(Xv[i],estimated[i],actual[i],scale)
 
     v.loss_visualizer()
     plt.show()

@@ -143,6 +143,39 @@ def generate_dataset(train_N,validation_N,scale):
     return X_train,Y_train,X_validation,Y_validation
 
 
+# generate validation dataset (for conformation after training CNN)
+def validation_dataset(validation_N,scale):
+
+    min_dir_n = 1
+    max_dir_n = 6
+    max_pic_n = 99
+
+    X_v = []
+    Y_v = []
+
+    X,Y = prepare_dataset(min_dir_n,max_dir_n,max_pic_n,scale)
+
+    indexes = np.random.permutation(len(X))
+
+    for i in range(validation_N):
+        X_v.append(X[indexes[i]])
+        Y_v.append(Y[indexes[i]])
+
+    Xv = np.array(X_v, dtype = np.float32)
+    Yv = np.array(Y_v)
+
+    print " "
+    print "loaded test dataset"
+    print "directory: " + str(min_dir_n) +"-"+ str(max_dir_n) + " picture: 0-" + str(max_pic_n)
+    print "total: " + str(len(X))
+
+    print "test_N: " + str(len(Xv))
+    print " "
+
+    return Xv,Yv
+
+
+
 # generate test dataset
 # !!!!!!!!!! never use this function !!!!!!!!!!
 def test_dataset(test_N,scale):
