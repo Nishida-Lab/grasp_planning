@@ -2,6 +2,8 @@
 
 This repository is for the Robotic Grasp Planning Project using Neural Networks. Currently, `Cornell Grasping Dataset`(Robot Learning Lab, Computer Science Department, Cornell University) is used to train the neural networks.
 
+![planning](.image/random_planning.png)
+
 ## Environment
 
 * Ubuntu 14.04
