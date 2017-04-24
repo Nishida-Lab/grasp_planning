@@ -38,7 +38,7 @@ robotic_grasp              <- the directory you created
 
 ## Explanation of Cornell Grasping Dataset
 
-Please read the document at following URL.
+Please read the document at following URL.  
 http://pr.cs.cornell.edu/grasping/rect_data/readmeRawData.txt
 
 ## Note
