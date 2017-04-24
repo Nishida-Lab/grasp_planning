@@ -41,7 +41,9 @@ if __name__ == '__main__':
     print 'epoch: ' + format(args.epoch)
     print ''
 
-    model = nn.CNN_classification1()
+    # load CNN structure
+    model = nn.CNN_classification()
+    #model = nn.CNN_classification1()
 
     # Setup an optimizer
     optimizer = chainer.optimizers.Adam()
@@ -75,5 +77,5 @@ if __name__ == '__main__':
 
     print "execution time : " + str(execution_time)
 
-    serializers.save_npz('cnn_test.model', model)
-    serializers.save_npz('cnn_test.state', optimizer)
+    serializers.save_npz('cnn.model', model)
+    serializers.save_npz('cnn.state', optimizer)
