@@ -40,7 +40,7 @@ robotic_grasp              <- the directory you created
 
 ## Explanation of Cornell Grasping Dataset
 
-Please read the document at following URL.  
+Please read the document at the following URL.  
 http://pr.cs.cornell.edu/grasping/rect_data/readmeRawData.txt
 
 ## Note
@@ -56,7 +56,7 @@ So please modify some files before you use them.
 
 ### How to delete NaN data
 
-These two files contain the information of `Grasping Rectangle`. They contain 4 lines for each rectangle. Each line contains the x and y coordinate of a vertex of that rectangle separated by a space. So when you delete NaN data, you need to delete 4 lines to maintain the structure of rectangles. You can modify the files by copying contents below.
+These two files contain the information of the `Grasping Rectangle`. They contain 4 lines for each rectangle. Each line contains the x and y coordinate of a vertex of that rectangle separated by a space. So when you want to delete NaN data, you need to delete 4 lines to maintain the structure of rectangles. You can modify the files by copying the contents below.
 
 __pcd0132cpos.txt__
 
