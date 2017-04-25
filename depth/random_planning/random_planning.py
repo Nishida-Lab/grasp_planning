@@ -25,7 +25,7 @@ from pygame.locals import *
 
 #python script
 import network_structure as nn
-import pickup_object2 as po
+import pickup_object as po
 import path as p
 
 
@@ -46,6 +46,12 @@ def label_handling(data_label_1,data_label_2):
 
     return data_label
 
+# show RGB image
+def show_picture(path):
+    path = p.data_path()+data_label[0]+'/pcd'+data_label[0]+data_label[1]
+    image1 = Image.open(path+'r.png')
+    image1.show()
+
 
 # load picture data
 def load_picture(path,scale):
@@ -56,7 +62,7 @@ def load_picture(path,scale):
 
     img_array = np.asanyarray(resize_img,dtype=np.float32)
     img_shape = img_array.shape
-    img_array = np.reshape(img_array,(img_shape[2]*img_shape[1]*img_shape[0],1))
+    img_array = np.reshape(img_array,(img_shape[1]*img_shape[0],1))
     img_list = []
     for i in range(len(img_array)):
         img_list.append(img_array[i][0]/255.0)
@@ -98,8 +104,8 @@ def random_rec(object_area,rec_area,scale):
         s1 = ((p2[0][0]-p1[0][0])*(p3[0][1]-p1[0][1])-(p2[0][1]-p1[0][1])*(p3[0][0]-p1[0][0]))/2
         s2 = ((p2[0][0]-p1[0][0])*(p1[0][1]-p4[0][1])-(p2[0][1]-p1[0][1])*(p1[0][0]-p4[0][0]))/2
 
-        xc = p3[0][0]+(p4[0][0]-p3[0][0])*s1/(s1+s2)
-        yc = p3[0][1]+(p4[0][1]-p3[0][1])*s1/(s1+s2)
+        xc = (p3[0][0]+(p4[0][0]-p3[0][0])*s1/(s1+s2))
+        yc = (p3[0][1]+(p4[0][1]-p3[0][1])*s1/(s1+s2))
 
         if rec_area[area_index][0] < xc and xc < rec_area[area_index][0]+rec_area[area_index][2] \
            and rec_area[area_index][1] < yc and yc < rec_area[area_index][1]+rec_area[area_index][3]:
@@ -108,8 +114,8 @@ def random_rec(object_area,rec_area,scale):
     xc_yc.append(xc)
     xc_yc.append(yc)
 
-    a = randint(30,80)
-    b = 20
+    a = randint(20,80)
+    b = 15
 
     x1 = a*np.cos(theta)-b*np.sin(theta)+xc
     y1 = a*np.sin(theta)+b*np.cos(theta)+yc
@@ -125,17 +131,17 @@ def random_rec(object_area,rec_area,scale):
 
     rec_list = []
 
-    rec_list.append(round(x1/scale,2))
-    rec_list.append(round(y1/scale,2))
+    rec_list.append(round((x1-100)/scale,2))
+    rec_list.append(round((y1-100)/scale,2))
 
-    rec_list.append(round(x2/scale,2))
-    rec_list.append(round(y2/scale,2))
+    rec_list.append(round((x2-100)/scale,2))
+    rec_list.append(round((y2-100)/scale,2))
 
-    rec_list.append(round(x3/scale,2))
-    rec_list.append(round(y3/scale,2))
+    rec_list.append(round((x3-100)/scale,2))
+    rec_list.append(round((y3-100)/scale,2))
 
-    rec_list.append(round(x4/scale,2))
-    rec_list.append(round(y4/scale,2))
+    rec_list.append(round((x4-100)/scale,2))
+    rec_list.append(round((y4-100)/scale,2))
 
     return rec_list,xc_yc,theta,p1,p2,p3,p4
 
@@ -144,7 +150,7 @@ def random_rec(object_area,rec_area,scale):
 def input_data(path,rec_list,scale):
     img_list = load_picture(path,scale)
     x = rec_list + img_list
-    x = np.array(x,dtype=np.float32).reshape((1,57608))
+    x = np.array(x,dtype=np.float32).reshape((1,33008))
 
     return x
 
@@ -159,8 +165,12 @@ def update_pygame(scr):
 
 # draw object area
 def draw_object_rectangle(rec_area):
+
     for i in range(len(rec_area)):
-        pygame.draw.rect(screen, (120,120,255), Rect(rec_area[i]),3)
+
+        rec = (rec_area[i][0]-100, rec_area[i][1]-100, rec_area[i][2], rec_area[i][3])
+
+        pygame.draw.rect(screen, (120,120,255), Rect(rec),3)
 
 
 # draw grasp rectangle
@@ -173,30 +183,20 @@ def draw_grasp_rectangle(color1,color2):
 
 # write text
 def captions(dir_n,pic_n,rc,cnt,rad,f1,f2):
-    text1 = f1.render("directory_n: "+str(dir_n)+" picture_n: "+str(pic_n), True, (255,255,255))
-    text2 = f1.render("quit: ESC", True, (255,255,255))
-    text3 = f1.render("renew: z", True, (255,255,255))
-    text4 = f2.render("rectangle:", True, (255,0,0))
-    text5 = f2.render("  "+str(np.array(rc)*4), True, (255,0,0))
-    text6 = f2.render("center_point: "+str(cnt)+",  angle [deg]: "+str(round(rad*(180/np.pi),2)), True, (255,0,0))
-    screen.blit(text1, [20, 20])
-    screen.blit(text2, [20, 50])
-    screen.blit(text3, [20, 80])
-    screen.blit(text4, [20, 370])
-    screen.blit(text5, [20, 400])
-    screen.blit(text6, [20, 440])
+    text1 = f1.render("directory_n: "+str(dir_n)+"   picture_n: "+str(pic_n), True, (255,255,255))
+    screen.blit(text1, [20, 15])
 
 
 #main
 if __name__ == '__main__':
 
 
-    directory_n = input('Directory No > ')
-    picture_n = input('Image No > ')
+    #directory_n = input('Directory No > ')
+    #picture_n = input('Image No > ')
 
     # random checking
-    #directory_n = randint(9)+1
-    #picture_n = randint(40)+1
+    directory_n = randint(9)+1
+    picture_n = randint(40)+1
 
     # multiple object recrangles will be appeard
     #directory_n = 7
@@ -210,19 +210,22 @@ if __name__ == '__main__':
     #directory_n = 2
     #picture_n = 5
 
-    scale = 4
+    scale = 2
 
     print 'directory:'+str(directory_n)+' picture:'+str(picture_n)
     data_label = label_handling(directory_n,picture_n)
-    path = p.data_path()+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
 
-    model = nn.CNN_classification3()
-    serializers.load_npz('cnn03a.model', model)
+    show_picture(data_label)
+
+    path = p.data_path()+data_label[0]+'/dp'+data_label[0]+data_label[1]+'r.png'
+
+    model = nn.CNN_classification()
+    serializers.load_npz('cnn.model', model)
 
     optimizer = chainer.optimizers.Adam()
     optimizer.setup(model)
 
-    screen_size = (640, 480)
+    screen_size = (400, 330)
     pygame.init()
     pygame.display.set_mode(screen_size)
     pygame.display.set_caption("random planning")
@@ -235,22 +238,17 @@ if __name__ == '__main__':
     font1 = pygame.font.Font(None, 30)
     font2 = pygame.font.Font(None, 30)
 
-    search_area,rec_area = po.find_object(path)
+    search_area,rec_area = po.find_object_from_RGB(data_label)
 
-    cycle = 0
-    sum_t = 0
 
     while (1):
 
         start = time.time()
+        update_pygame(screen)
         rec,center,angle,p1,p2,p3,p4 = random_rec(search_area,rec_area,scale)
         x = input_data(path,rec,scale)
         test_output = model.forward(chainer.Variable(x))
         test_label = np.argmax(test_output.data[0])
-        elapsed_time = time.time() - start
-        cycle += 1
-        sum_t += elapsed_time
-        print  str(cycle)+ ': ' +str(elapsed_time)+'[sec]'
 
         # draw grasp rectangle
         if test_label == 1:
@@ -264,11 +262,11 @@ if __name__ == '__main__':
                 draw_object_rectangle(rec_area)
                 draw_grasp_rectangle(rec_color1,rec_color2)
 
-                pygame.draw.circle(screen, (255,0,0), p1[0], 5)
-                pygame.draw.circle(screen, (0,255,0), p2[0], 5)
-                pygame.draw.circle(screen, (0,0,255), p3[0], 5)
-                pygame.draw.circle(screen, (0,0,0), p4[0], 5)
-                pygame.draw.circle(screen, (255,255,0), center, 5)
+                # pygame.draw.circle(screen, (255,0,0), (p1[0][0]-100, p1[0][1]-100), 5)
+                # pygame.draw.circle(screen, (0,255,0), (p2[0][0]-100, p2[0][1]-100), 5)
+                # pygame.draw.circle(screen, (0,0,255), (p3[0][0]-100, p3[0][1]-100), 5)
+                # pygame.draw.circle(screen, (0,0,0), (p4[0][0]-100, p4[0][1]-100), 5)
+                # pygame.draw.circle(screen, (255,255,0), (center[0]-100,center[1]-100), 5)
 
                 captions(directory_n,picture_n,rec,center,angle,font1,font2)
                 for event in pygame.event.get():
@@ -281,5 +279,7 @@ if __name__ == '__main__':
                             replay = 0
                         if event.key == K_ESCAPE:
                             pygame.quit()
-                            print 'average: ' +str(sum_t/cycle)+'[sec]'
                             sys.exit()
+        else:
+            update_pygame(screen)
+            captions(directory_n,picture_n,rec,center,angle,font1,font2)
