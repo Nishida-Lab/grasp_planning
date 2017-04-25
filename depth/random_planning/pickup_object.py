@@ -58,7 +58,7 @@ def find_object_from_RGB(data_label):
 
     # area threshold
     min_area = 100
-    max_area = 20000
+    max_area = 15000
 
     object_contour = [cnt for cnt in contour if cv2.contourArea(cnt) < max_area and cv2.contourArea(cnt) > min_area]
     cv2.drawContours(img_contour, object_contour, -1, (255,0,255),2)
@@ -101,6 +101,9 @@ def draw_oject_rectangle_depth(data_label,contour,rec):
 # main
 if __name__ == '__main__':
 
+    label1 = input('Directory No > ')
+    label2 = input('Image No > ')
+
     #demo
     #label1 = 8
     #label2 = 52
@@ -110,8 +113,8 @@ if __name__ == '__main__':
     #label2 = 77
 
     # for random checking
-    label1 = randint(7)+1
-    label2 = randint(98)+1
+    #label1 = randint(7)+1
+    #label2 = randint(98)+1
 
     # multiple recrangles will be appeard
     #label1 = 7

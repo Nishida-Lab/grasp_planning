@@ -12,6 +12,9 @@ import os
 import random
 import time
 
+# OpenCV
+import cv2
+
 #chainer library
 import chainer
 import chainer.functions as F
@@ -46,17 +49,20 @@ def label_handling(data_label_1,data_label_2):
 
     return data_label
 
+
 # show RGB image
 def show_picture(path):
     path = p.data_path()+data_label[0]+'/pcd'+data_label[0]+data_label[1]
-    image1 = Image.open(path+'r.png')
-    image1.show()
+    img = cv2.imread(path+'r.png')
+    plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    plt.axis('off')
+    plt.pause(0.05)
 
 
-# load picture data
+# load image data
 def load_picture(path,scale):
 
-    img=Image.open(path)
+    img = Image.open(path)
 
     resize_img = img.resize((img.size[0]/scale,img.size[1]/scale))
 
@@ -114,20 +120,20 @@ def random_rec(object_area,rec_area,scale):
     xc_yc.append(xc)
     xc_yc.append(yc)
 
-    a = randint(20,80)
-    b = 15
+    w = randint(20,80)
+    h = 15
 
-    x1 = a*np.cos(theta)-b*np.sin(theta)+xc
-    y1 = a*np.sin(theta)+b*np.cos(theta)+yc
+    x1 = w*np.cos(theta)-h*np.sin(theta)+xc
+    y1 = w*np.sin(theta)+h*np.cos(theta)+yc
 
-    x2 = -a*np.cos(theta)-b*np.sin(theta)+xc
-    y2 = -a*np.sin(theta)+b*np.cos(theta)+yc
+    x2 = -w*np.cos(theta)-h*np.sin(theta)+xc
+    y2 = -w*np.sin(theta)+h*np.cos(theta)+yc
 
-    x3 = -a*np.cos(theta)+b*np.sin(theta)+xc
-    y3 = -a*np.sin(theta)-b*np.cos(theta)+yc
+    x3 = -w*np.cos(theta)+h*np.sin(theta)+xc
+    y3 = -w*np.sin(theta)-h*np.cos(theta)+yc
 
-    x4 = a*np.cos(theta)+b*np.sin(theta)+xc
-    y4 = a*np.sin(theta)-b*np.cos(theta)+yc
+    x4 = w*np.cos(theta)+h*np.sin(theta)+xc
+    y4 = w*np.sin(theta)-h*np.cos(theta)+yc
 
     rec_list = []
 
@@ -143,7 +149,7 @@ def random_rec(object_area,rec_area,scale):
     rec_list.append(round((x4-100)/scale,2))
     rec_list.append(round((y4-100)/scale,2))
 
-    return rec_list,xc_yc,theta,p1,p2,p3,p4
+    return rec_list,xc_yc,theta,w,p1,p2,p3,p4
 
 
 # generate input data for CNN
@@ -153,6 +159,13 @@ def input_data(path,rec_list,scale):
     x = np.array(x,dtype=np.float32).reshape((1,33008))
 
     return x
+
+
+# calculate z
+def calculate_z(path,xc_yc):
+    img = np.asarray(Image.open(path))
+    z = img[int(xc_yc[1])][int(xc_yc[0])]*(150/255.0)
+    return z
 
 
 # update
@@ -165,11 +178,8 @@ def update_pygame(scr):
 
 # draw object area
 def draw_object_rectangle(rec_area):
-
     for i in range(len(rec_area)):
-
         rec = (rec_area[i][0]-100, rec_area[i][1]-100, rec_area[i][2], rec_area[i][3])
-
         pygame.draw.rect(screen, (120,120,255), Rect(rec),3)
 
 
@@ -182,9 +192,13 @@ def draw_grasp_rectangle(color1,color2):
 
 
 # write text
-def captions(dir_n,pic_n,rc,cnt,rad,f1,f2):
+def captions(dir_n,pic_n,f1):
     text1 = f1.render("directory_n: "+str(dir_n)+"   picture_n: "+str(pic_n), True, (255,255,255))
+    text2 = f1.render("quit: ESC", True, (255,255,255))
+    text3 = f1.render("renew: z", True, (255,255,255))
     screen.blit(text1, [20, 15])
+    screen.blit(text2, [20, 50])
+    screen.blit(text3, [20, 80])
 
 
 #main
@@ -236,7 +250,6 @@ if __name__ == '__main__':
 
     pygame.font.init()
     font1 = pygame.font.Font(None, 30)
-    font2 = pygame.font.Font(None, 30)
 
     search_area,rec_area = po.find_object_from_RGB(data_label)
 
@@ -245,7 +258,7 @@ if __name__ == '__main__':
 
         start = time.time()
         update_pygame(screen)
-        rec,center,angle,p1,p2,p3,p4 = random_rec(search_area,rec_area,scale)
+        rec,center,angle,w,p1,p2,p3,p4 = random_rec(search_area,rec_area,scale)
         x = input_data(path,rec,scale)
         test_output = model.forward(chainer.Variable(x))
         test_label = np.argmax(test_output.data[0])
@@ -255,6 +268,12 @@ if __name__ == '__main__':
             rec_color1 = (255,255,0)
             rec_color2 = (0,255,0)
             replay = 1
+
+            # display xc_yc,theta
+            angle = round(angle*180/np.pi,2)
+            zc = calculate_z(path,rec)
+            print '(xc,yc): '+str(center)+',  zc[mm]: '+str(zc)
+            print 'theta[deg]: '+str(angle)+',  gripper_width: '+str(w)+'\n'
 
             while(replay==1):
 
@@ -268,11 +287,10 @@ if __name__ == '__main__':
                 # pygame.draw.circle(screen, (0,0,0), (p4[0][0]-100, p4[0][1]-100), 5)
                 # pygame.draw.circle(screen, (255,255,0), (center[0]-100,center[1]-100), 5)
 
-                captions(directory_n,picture_n,rec,center,angle,font1,font2)
+                captions(directory_n,picture_n,font1)
                 for event in pygame.event.get():
                     if event.type == QUIT:
                         pygame.quit()
-                        print 'average: ' +str(sum_t/cycle)+'[sec]'
                         sys.exit()
                     if event.type == KEYDOWN:
                         if event.key == K_z:
@@ -282,4 +300,4 @@ if __name__ == '__main__':
                             sys.exit()
         else:
             update_pygame(screen)
-            captions(directory_n,picture_n,rec,center,angle,font1,font2)
+            captions(directory_n,picture_n,font1)
