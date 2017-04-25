@@ -192,12 +192,12 @@ def captions(dir_n,pic_n,rc,cnt,rad,f1,f2):
 if __name__ == '__main__':
 
 
-    directory_n = input('Directory No > ')
-    picture_n = input('Image No > ')
+    #directory_n = input('Directory No > ')
+    #picture_n = input('Image No > ')
 
     # random checking
-    #directory_n = randint(9)+1
-    #picture_n = randint(40)+1
+    directory_n = randint(9)+1
+    picture_n = randint(40)+1
 
     # multiple object recrangles will be appeard
     #directory_n = 7
@@ -217,8 +217,11 @@ if __name__ == '__main__':
     data_label = label_handling(directory_n,picture_n)
     path = p.data_path()+data_label[0]+'/pcd'+data_label[0]+data_label[1]+'r.png'
 
-    model = nn.CNN_classification3()
-    serializers.load_npz('cnn03a.model', model)
+    model = nn.CNN_classification()
+    serializers.load_npz('cnn01.model', model)
+
+    #model = nn.CNN_classification3()
+    #serializers.load_npz('cnn03a.model', model)
 
     optimizer = chainer.optimizers.Adam()
     optimizer.setup(model)

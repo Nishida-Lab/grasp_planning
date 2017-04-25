@@ -22,18 +22,11 @@ if __name__ == '__main__':
     validation_N = 100
 
     # classification:1
-    model = nn.CNN_classification1()
+    model = nn.CNN_classification()
     serializers.load_npz('cnn01.model', model)
-
-    # classification:2
-    #model = nn.CNN_classification2()
-    #serializers.load_npz('cnn02.model', model)
 
     #model = nn.CNN_classification3()
     #serializers.load_npz('cnn03a.model', model)
-
-    #model = nn.CNN_classification4()
-    #serializers.load_npz('cnn04.model', model)
 
     optimizer = chainer.optimizers.Adam()
     optimizer.setup(model)

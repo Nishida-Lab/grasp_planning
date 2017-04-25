@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='GRASP CLASSIFER')
     parser.add_argument('--batchsize', '-b', type=int, default=10,
                         help='Number of images in each mini batch')
-    parser.add_argument('--epoch', '-e', type=int, default=100,
+    parser.add_argument('--epoch', '-e', type=int, default=200,
                         help='Number of sweeps over the dataset to train')
     parser.add_argument('--gpu', '-g', type=int, default=-1,
                         help='GPU ID (negative value indicates CPU)')
@@ -41,11 +41,8 @@ if __name__ == '__main__':
     print 'epoch: ' + format(args.epoch)
     print ''
 
-    model = nn.CNN_classification1()
-    #model = nn.CNN_classification2()
+    model = nn.CNN_classification()
     #model = nn.CNN_classification3()
-    #model = nn.CNN_classification4()
-    #model = nn.CNN_classification5()
 
     # Setup an optimizer
     optimizer = chainer.optimizers.Adam()
