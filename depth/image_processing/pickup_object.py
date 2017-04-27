@@ -101,17 +101,20 @@ def draw_oject_rectangle_depth(data_label,contour,rec):
 # main
 if __name__ == '__main__':
 
+    label1 = input('Directory No > ')
+    label2 = input('Image No > ')
+
     #demo
     #label1 = 8
     #label2 = 52
 
     # data label
-    #label1 = 3
-    #label2 = 77
+    #label1 = 1
+    #label2 = 68
 
     # for random checking
-    label1 = randint(7)+1
-    label2 = randint(98)+1
+    #label1 = randint(7)+1
+    #label2 = randint(98)+1
 
     # multiple recrangles will be appeard
     #label1 = 7
