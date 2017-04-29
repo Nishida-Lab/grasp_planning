@@ -205,12 +205,12 @@ def captions(dir_n,pic_n,f1):
 if __name__ == '__main__':
 
 
-    #directory_n = input('Directory No > ')
-    #picture_n = input('Image No > ')
+    directory_n = input('Directory No > ')
+    picture_n = input('Image No > ')
 
     # random checking
-    directory_n = randint(9)+1
-    picture_n = randint(40)+1
+    #directory_n = randint(9)+1
+    #picture_n = randint(40)+1
 
     # multiple object recrangles will be appeard
     #directory_n = 7
