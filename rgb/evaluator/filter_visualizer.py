@@ -146,19 +146,19 @@ if __name__ == '__main__':
 
     # view conv filter
     i_cw1 = model.conv.W.data
-    print i_cw1.shape
-    #for i in range(len(i_cw1)):
-        #flt = i_cw1[i]
-        #flt = np.array(flt).reshape(5,5,3)
-        #print flt
-        #flt = Image.fromarray(np.uint8(flt))
-        #flt.show()
+    #print i_cw1.shape
+    # for i in range(len(i_cw1)):
+    #     flt = i_cw1[i]
+    #     flt = np.array(flt).reshape(5,5,3)
+    #     print flt
+    #     flt = Image.fromarray(np.uint8(flt))
+    #     flt.show()
 
     # view conv1 filtered image
     cv1 = model.conv(img).data
     print cv1.shape
     im_cv1 = cv1.reshape(116,156,3)*255
-    im_cv1 = Image.fromarray(np.uint8(im_cv1))
+    im_cv1 = Image.fromarray(np.uint8(im_cv1)).transpose(3)
     im_cv1.show()
     im_cv1.save('filter/conv1.png')
 
