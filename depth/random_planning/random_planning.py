@@ -117,8 +117,8 @@ def random_rec(object_area,rec_area,scale):
            and rec_area[area_index][1] < yc and yc < rec_area[area_index][1]+rec_area[area_index][3]:
             break
 
-    xc_yc.append(xc)
-    xc_yc.append(yc)
+    xc_yc.append(xc-100)
+    xc_yc.append(yc-100)
 
     w = randint(20,80)
     h = 15
@@ -164,7 +164,7 @@ def input_data(path,rec_list,scale):
 # calculate z
 def calculate_z(path,xc_yc):
     img = np.asarray(Image.open(path))
-    z = img[int(xc_yc[1])][int(xc_yc[0])]*(150/255.0)
+    z = img[int(xc_yc[0])][int(xc_yc[1])]*(150/255.0)
     return z
 
 
@@ -285,7 +285,7 @@ if __name__ == '__main__':
                 # pygame.draw.circle(screen, (0,255,0), (p2[0][0]-100, p2[0][1]-100), 5)
                 # pygame.draw.circle(screen, (0,0,255), (p3[0][0]-100, p3[0][1]-100), 5)
                 # pygame.draw.circle(screen, (0,0,0), (p4[0][0]-100, p4[0][1]-100), 5)
-                # pygame.draw.circle(screen, (255,255,0), (center[0]-100,center[1]-100), 5)
+                pygame.draw.circle(screen, (255,255,0), (center[0],center[1]), 5)
 
                 captions(directory_n,picture_n,font1)
                 for event in pygame.event.get():
