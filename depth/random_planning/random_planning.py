@@ -162,9 +162,16 @@ def input_data(path,rec_list,scale):
 
 
 # calculate z
-def calculate_z(path,xc_yc):
-    img = np.asarray(Image.open(path))
-    z = img[int(xc_yc[0])][int(xc_yc[1])]*(150/255.0)
+def calculate_z(path,rec,scale):
+    img = cv2.imread(path)
+    grayed = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img_array = np.asarray(grayed)
+    x1 = int(rec[1]*scale)
+    y1 = int(rec[0]*scale)
+    x2 = int(rec[5]*scale)
+    y2 = int(rec[4]*scale)
+    ml = np.max(img_array[np.min([x1,x2]):np.max([x1,x2]),np.min([y1,y2]):np.max([y1,y2])])
+    z =round(ml*(150/255.0),2)
     return z
 
 
@@ -271,7 +278,7 @@ if __name__ == '__main__':
 
             # display xc_yc,theta
             angle = round(angle*180/np.pi,2)
-            zc = calculate_z(path,rec)
+            zc = calculate_z(path,rec,scale)
             print '(xc,yc): '+str(center)+',  zc[mm]: '+str(zc)
             print 'theta[deg]: '+str(angle)+',  gripper_width: '+str(w)+'\n'
 
@@ -286,6 +293,9 @@ if __name__ == '__main__':
                 # pygame.draw.circle(screen, (0,0,255), (p3[0][0]-100, p3[0][1]-100), 5)
                 # pygame.draw.circle(screen, (0,0,0), (p4[0][0]-100, p4[0][1]-100), 5)
                 pygame.draw.circle(screen, (255,255,0), (center[0],center[1]), 5)
+                # pygame.draw.circle(screen, (255,0,0), (int(rec[0]*scale),int(rec[1]*scale)), 5)
+                # pygame.draw.circle(screen, (255,0,0), (int(rec[4]*scale),int(rec[5]*scale)), 5)
+
 
                 captions(directory_n,picture_n,font1)
                 for event in pygame.event.get():

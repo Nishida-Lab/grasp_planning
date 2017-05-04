@@ -78,6 +78,6 @@ def find_object_from_RGB(data_label):
     plt.figure(0)
     plt.imshow(cv2.cvtColor(img_contour, cv2.COLOR_BGR2RGB))
     plt.axis('off')
-    #cv2.imwrite('pictures/contour.png',img_contour)
+    cv2.imwrite('pictures/rgb.png',img_contour)
 
     return np.array(object_contour),np.array(object_rec)

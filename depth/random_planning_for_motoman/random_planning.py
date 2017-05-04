@@ -46,7 +46,7 @@ def label_handling(data_label_1,data_label_2):
     return data_label
 
 
-# load image data
+# load the depth image data
 def load_depth_image(path,scale):
 
     img = cv2.imread(path)
@@ -71,20 +71,33 @@ def generate_input_data(path,rec_list,scale):
 
 
 # calculate z
-def calculate_z(path,xc_yc):
-    img = np.asarray(Image.open(path))
-    z = img[int(xc_yc[1])][int(xc_yc[0])]*(150/255.0)
+def calculate_z(path,rec,scale):
+    img = cv2.imread(path)
+    grayed = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img_array = np.asarray(grayed)
+    x1 = int(rec[1]*scale)
+    y1 = int(rec[0]*scale)
+    x2 = int(rec[5]*scale)
+    y2 = int(rec[4]*scale)
+    ml = np.max(img_array[np.min([x1,x2]):np.max([x1,x2]),np.min([y1,y2]):np.max([y1,y2])])
+    z =round(ml*(150/255.0),2)
     return z
 
 
-# draw object area
-def draw_object_area(rec_area):
+# draw the object area
+def draw_object_area(img,object_area,rec_area):
+
     for i in range(len(rec_area)):
-        rec = (rec_area[i][0]-100, rec_area[i][1]-100, rec_area[i][2], rec_area[i][3])
-        pygame.draw.rect(screen, (120,120,255), Rect(rec),3)
+
+        for j in range(len(object_area[i])):
+            for k in range(2):
+                object_area[i][j][0][k] = object_area[i][j][0][k] - 100
+
+        cv2.rectangle(img, (rec_area[i][0]-100, rec_area[i][1]-100), (rec_area[i][0]+rec_area[i][2]-100, rec_area[i][1]+rec_area[i][3]-100), (255,0,0), 1)
+    cv2.drawContours(img, object_area, -1, (255,0,255),1)
 
 
-# draw grasp rectangle
+# draw the grasp rectangle
 def draw_grasp_rectangle(img,rec,scale):
     color = [(0,255,255), (0,255,0)]
     rec = (np.array(rec)*scale).astype(np.int32)
@@ -95,13 +108,18 @@ def draw_grasp_rectangle(img,rec,scale):
     plt.figure(1)
     plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     plt.axis('off')
+    cv2.imwrite('pictures/depth.png',img)
 
 
 #main
 if __name__ == '__main__':
 
-    directory_n = randint(9)+1
-    picture_n = randint(40)+1
+    directory_n = input('Directory No > ')
+    picture_n = input('Image No > ')
+
+    # random checking
+    #directory_n = randint(9)+1
+    #picture_n = randint(40)+1
 
     scale = 2
 
@@ -128,5 +146,10 @@ if __name__ == '__main__':
         if test_label == 1:
             break
 
+    angle = round(angle*180/np.pi,2)
+    z = calculate_z(path,rec,scale)
+    print '\n'+'(xc,yc): '+str(center)+',  zc[mm]: '+str(z)
+    print 'theta[deg]: '+str(angle)+',  gripper_width: '+str(w)+'\n'
+    draw_object_area(img,search_area,rec_area)
     draw_grasp_rectangle(img,rec,scale)
     plt.show()
